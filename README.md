@@ -72,7 +72,9 @@ Each commit message **must** follow the structure:
 
 ```txt
 chore(packages): Update react design system package
+
 Update react design system package to v2.9.1
+
 References: JIRA-1234
 ```
 
