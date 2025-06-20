@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "build": "rsbuild build",
+    "build": "rm -rf source-maps && rsbuild build",
     "browsers": "npx browserslist",
     "browsers:lint": "npx browserslist-lint",
     "eslint": "eslint src/* public/* --quiet --no-error-on-unmatched-pattern",
