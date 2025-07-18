@@ -1,7 +1,8 @@
 import type { FC } from 'react'
-import React, { Suspense } from 'react'
+import React, { Suspense, useEffect } from 'react'
 import { useSelector } from 'react-redux'
 import { WEB_HTTP_CONTEXT } from '@am92/web-http'
+import disableDevtool from 'disable-devtool'
 
 import Loader from '~/src/Components/Loader'
 
@@ -11,6 +12,7 @@ import {
 } from '~/src/Redux/Auth/Selectors'
 import performHandshake from '~/src/Services/performHandshake'
 
+import { disableDevtoolConfig } from './Configurations/devtools'
 import { asHttp } from '~/src/Configurations/WebHttp'
 
 import AppRouter from '~/src/AppRouter'
@@ -32,6 +34,7 @@ const AppInitializer: FC = () => {
     try {
       await performHandshake()
       await initAppData()
+      await initInfoSecurity()
       setInitiated(true)
     } catch (error) {
       console.log('AppInitializer error', error)
@@ -42,7 +45,16 @@ const AppInitializer: FC = () => {
   // NOTE: All Application Level Initialization Logic
   const initAppData = async () => {}
 
-  React.useEffect(() => {
+  // NOTE: All Information Security Initialization Logic
+  const initInfoSecurity = async () => {
+    // @ts-ignore: Unreachable code error
+    // eslint-disable-next-line
+    if (APP_ENV_IS_PRODUCTION) {
+      disableDevtool(disableDevtoolConfig)
+    }
+  }
+
+  useEffect(() => {
     initiateApp()
   })
 
