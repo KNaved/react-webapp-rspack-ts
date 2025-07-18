@@ -41,6 +41,7 @@ export default class AppErrorBoundary extends Component<
     return { errorComponentCode: getErrorComponentCode() }
   }
 
+  // TODO: Move this to a global error handler
   componentDidMount() {
     // Set up global error listener
     window.addEventListener('error', this.handleGlobalError)

@@ -4,6 +4,8 @@ import type { FC } from 'react'
 import { CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 
+import AppErrorBoundary from './AppErrorBoundary'
+
 import { THEME_MODE_STORAGE_KEY } from '~/src/Constants/THEME'
 
 import AppInitializer from '~/src/AppInitializer'
@@ -18,7 +20,13 @@ const App: FC<IAppProps> = props => {
 
   return (
     <ThemeProvider theme={AppTheme} modeStorageKey={THEME_MODE_STORAGE_KEY}>
-      <CssBaseline>{persisted && <AppInitializer />}</CssBaseline>
+      <CssBaseline>
+        {persisted && (
+          <AppErrorBoundary>
+            <AppInitializer />
+          </AppErrorBoundary>
+        )}
+      </CssBaseline>
     </ThemeProvider>
   )
 }

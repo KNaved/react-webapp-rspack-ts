@@ -4,16 +4,13 @@ import { createRoot } from 'react-dom/client'
 import { AppStoreProvider } from '~/src/Configurations/AppStore'
 
 import App from '~/src/App'
-import AppErrorBoundary from '~/src/AppErrorBoundary'
 
 const container = document.getElementById('root')
 if (container) {
   const root = createRoot(container)
   root.render(
     <React.StrictMode>
-      <AppErrorBoundary>
-        <AppStoreProvider AppComponent={App} />
-      </AppErrorBoundary>
+      <AppStoreProvider AppComponent={App} />
     </React.StrictMode>
   )
 
