@@ -20,6 +20,7 @@
     "@am92/web-http": "^2.0.29",
     "@fontsource-variable/inter": "^5.2.5",
     "@reduxjs/toolkit": "^2.8.2",
+    "disable-devtool": "^0.3.8",
     "localforage": "^1.10.0",
     "lodash": "^4.17.21",
     "react": "^18.3.1",

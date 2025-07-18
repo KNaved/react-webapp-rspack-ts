@@ -8,6 +8,7 @@ import {
   getTheme
 } from '@am92/react-design-system'
 
+import AppErrorBoundary from './AppErrorBoundary'
 import ThemeManager from './ThemeManager'
 
 import { getThemeReducer } from './Redux/Theme/Selectors'
@@ -30,7 +31,11 @@ const App: FC<IAppProps> = props => {
     <CssVarsProvider theme={AppTheme} modeStorageKey={THEME_MODE_STORAGE_KEY}>
       <DsCssBaseline>
         <ThemeManager />
-        {persisted && <AppInitializer />}
+        {persisted && (
+          <AppErrorBoundary>
+            <AppInitializer />
+          </AppErrorBoundary>
+        )}
       </DsCssBaseline>
     </CssVarsProvider>
   )
