@@ -9,7 +9,8 @@ import {
   AS_API_KEY,
   AS_API_TIMEOUT,
   AS_ENABLE_CRYPTOGRAPHY
-} from './env'
+} from '../env'
+import { responseErrorInterceptor } from './Interceptor'
 
 const AS_AXIOS_HTTP_CONFIG: WebHttpAxiosConfig = {
   baseURL: AS_API_DOMAIN,
@@ -35,6 +36,9 @@ const AS_WEB_HTTP_CONFIG: WebHttpConfig = {
 }
 export const asHttp = new WebHttp(AS_AXIOS_HTTP_CONFIG, AS_WEB_HTTP_CONFIG)
 asHttp.context.set(WEB_HTTP_CONTEXT.API_KEY, AS_API_KEY)
+
+// Rate Limiter Interceptor
+asHttp.interceptors.response.use(response => response, responseErrorInterceptor)
 
 // const AXIOS_HTTP_CONFIG: WebHttpAxiosConfig = { timeout: 30000 }
 // const WEB_HTTP_CONFIG: WebHttpConfig = {
