@@ -48,10 +48,10 @@ Each commit message **must** follow the structure:
 | Part     | Required| Description |
 |----------|---------|-------------|
 | `type`   |   ✅    | Conventional commit type (`feat`,`fix`,`chore`,`refactor`,`docs`,`style`,`test`,`perf`,`ci`,`build`,`revert`) |
-| `scope`  |   ✅    | Scope of the change — must be one of: `env`, `redux`, `packages`, `breaking-change`, `error`, `commit-lint` |
+| `scope`  |   ⬜     | Scope of the change — must be one of: `env`, `redux`, `packages`, `breaking-change`, `error`, `commit-lint`, `config`, `layout`, `theme`, `css`, `router`, `eslint`, `plugin`, `hooks`, `scripts`, `auth`, `csp`, `changelog`, `api`, `migration`, `vulnerability`, `tests`, `mocks` |
 | `subject`|   ✅    | Short summary (sentence-case, no period at the end) |
-| `body`   |   ✅    | Detailed description of what and why |
-| `footer` |   ✅    | Must contain: `References: <JIRA-ID>` (e.g., `References: JIRA-1234`) |
+| `body`   |   ⬜     | Optional, Detailed description of what and why |
+| `footer` |   ⬜      | Optional, May contain: `References: <JIRA-ID>`, `Fixes: <JIRA-ID>` (e.g., `References: JIRA-1234`) |
 
 
 
@@ -68,7 +68,7 @@ Each commit message **must** follow the structure:
   - build – changes that affect the build system or external dependencies
   - revert – reverts a previous commit
 
-#### ✅ Valid Example
+#### Sample Example
 
 ```txt
 chore(packages): Update react design system package

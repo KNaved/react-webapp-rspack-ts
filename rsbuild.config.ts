@@ -159,7 +159,7 @@ Please Node: if you are running script for the first time, you may need to creat
       inject: false
     },
     performance: {
-      removeConsole: false, //isProduction, // Remove console based on the env mode
+      removeConsole: isProduction, // Remove console based on the env mode
       removeMomentLocale: isProdBuild,
       preload:
         (process.env.PRELOAD && {
