@@ -9,7 +9,7 @@ const configuration: UserConfig = {
     // 'type-enum': [2,'always', ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'build', 'ci', 'chore', 'revert']],
     'scope-empty': [0, 'never'],
     'scope-enum': [
-      0,
+      2,
       'always',
       [
         'env',
