@@ -1,5 +1,5 @@
-import type { RouteObject } from 'react-router-dom'
-import { createBrowserRouter } from 'react-router-dom'
+import type { RouteObject } from 'react-router'
+import { createBrowserRouter } from 'react-router'
 
 import ErrorBoundary from '~/src/Layouts/ErrorBoundary'
 

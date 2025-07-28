@@ -1,10 +1,6 @@
 import type { FC } from 'react'
 import { useEffect } from 'react'
-import {
-  isRouteErrorResponse,
-  useNavigate,
-  useRouteError
-} from 'react-router-dom'
+import { isRouteErrorResponse, useNavigate, useRouteError } from 'react-router'
 
 import Loader from '~/src/Components/Loader'
 
