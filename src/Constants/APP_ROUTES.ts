@@ -1,4 +1,4 @@
-import type { NavigateOptions } from 'react-router-dom'
+import type { NavigateOptions } from 'react-router'
 
 export type AppRouteItem = {
   pathname: string

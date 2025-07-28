@@ -1,6 +1,6 @@
 import type { FC } from 'react'
 import { Suspense, useId } from 'react'
-import { RouterProvider } from 'react-router-dom'
+import { RouterProvider } from 'react-router/dom'
 
 import Loader from '~/src/Components/Loader'
 
