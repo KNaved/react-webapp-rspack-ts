@@ -2,10 +2,10 @@
 <html lang="en">
   <head>
 
-    <% if (PRECONNECT_DOMAINS && PRECONNECT_DOMAINS.length) { %>
-      <% PRECONNECT_DOMAINS = PRECONNECT_DOMAINS.split(',') %>
-      <% PRECONNECT_DOMAINS.forEach(function(PRECONNECT_DOMAIN){ %>
-        <link rel="preconnect" href="<%= PRECONNECT_DOMAIN %>" />
+    <% if (PRE_CONNECT && PRE_CONNECT.length) { %>
+      <% PRE_CONNECT = PRE_CONNECT.split(',') %>
+      <% PRE_CONNECT.forEach(function(PRE_CONNECT_DOMAIN){ %>
+        <link rel="preconnect" href="<%= PRE_CONNECT_DOMAIN %>" />
       <% }); %>
     <% } %>
 
