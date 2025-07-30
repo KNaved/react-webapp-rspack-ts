@@ -1,5 +1,10 @@
 import { GenerateSW } from '@aaroon/workbox-rspack-plugin'
-import { defineConfig, loadEnv, type RsbuildConfig } from '@rsbuild/core'
+import {
+  defineConfig,
+  loadEnv,
+  type RsbuildConfig,
+  type SriAlgorithm
+} from '@rsbuild/core'
 import { pluginAssetsRetry } from '@rsbuild/plugin-assets-retry'
 import { pluginBasicSsl } from '@rsbuild/plugin-basic-ssl'
 import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill'
@@ -10,10 +15,13 @@ import { codeInspectorPlugin } from 'code-inspector-plugin'
 import { pluginEjs } from 'rsbuild-plugin-ejs'
 import { pluginHtmlMinifierTerser } from 'rsbuild-plugin-html-minifier-terser'
 
+import cspConfig from './csp.config'
 import manifestConfig from './manifest.config'
 import obfuscatorConfig from './obfuscator.config'
 import { pluginFavicon } from './rsBuildPlugins/Favicon'
 import WebpackObfuscatorPlugin from './rsBuildPlugins/pluginCodeObfuscator/WebpackObfuscatorPlugin'
+import { pluginContentSecurityPolicy } from './rsBuildPlugins/pluginContentSecurityPolicy'
+import { pluginCreateAssetIntegrity } from './rsBuildPlugins/pluginCreateAssetIntegrity'
 import { pluginRenameAssetsAndReferences } from './rsBuildPlugins/pluginRenameAssetsAndReferences'
 
 export default defineConfig(({ envMode, env }) => {
@@ -59,20 +67,22 @@ Please Node: if you are running script for the first time, you may need to creat
 
   if (isProdBuild) {
     rsBuildPlugins.push(
-      pluginAssetsRetry(),
+      pluginAssetsRetry({
+        inlineScript: false
+      }),
       pluginHtmlMinifierTerser(),
       pluginFavicon('./public/favicon.svg', manifestConfig),
-      pluginRenameAssetsAndReferences()
+      pluginRenameAssetsAndReferences(),
+      pluginCreateAssetIntegrity(),
+      pluginContentSecurityPolicy({
+        config: cspConfig
+      })
     )
   }
 
   if (process.env.HTTPS === 'true') {
     rsBuildPlugins.push(pluginBasicSsl())
   }
-
-  // Split and filter blank values
-  const dnsPrefetch = process.env.DNS_PREFETCH?.split(',').filter(n => n)
-  const preConnect = process.env.PRE_CONNECT?.split(',').filter(n => n)
 
   const config: RsbuildConfig = {
     dev: {
@@ -130,7 +140,11 @@ Please Node: if you are running script for the first time, you may need to creat
     plugins: rsBuildPlugins,
     html: {
       template: './public/index.ejs',
-      templateParameters: parsed,
+      templateParameters: {
+        ...parsed,
+        PRECONNECT_DOMAINS: process.env.PRECONNECT_DOMAINS,
+        DNS_PREFETCH: process.env.DNS_PREFETCH
+      },
       title: manifestConfig.appShortName || manifestConfig.appName,
       meta: {
         description: manifestConfig.appDescription || '',
@@ -170,9 +184,7 @@ Please Node: if you are running script for the first time, you may need to creat
             return new RegExp(`^.*?\/${name}.*.${ext}$`)
           })
         }) ||
-        undefined,
-      dnsPrefetch: (dnsPrefetch?.length && dnsPrefetch) || undefined,
-      preconnect: (preConnect?.length && preConnect) || undefined
+        undefined
     },
     tools: {
       rspack(_config, { appendPlugins }) {
@@ -210,6 +222,12 @@ Please Node: if you are running script for the first time, you may need to creat
         if (isProdBuild) {
           appendPlugins(new WebpackObfuscatorPlugin(obfuscatorConfig, []))
         }
+      }
+    },
+    security: {
+      sri: {
+        enable: 'auto',
+        algorithm: 'sha256' as SriAlgorithm
       }
     }
   }
