@@ -2,13 +2,7 @@ import type { TPluginContentSecurityPolicyConfig } from './rsBuildPlugins/plugin
 
 const cspConfig: TPluginContentSecurityPolicyConfig = {
   userDefinedCsp: {
-    'style-src': [
-      `'unsafe-inline'`,
-      'https://cdn.jsdelivr.net',
-      'https://subzero.axisbank.com'
-    ],
-    'font-src': ['https://cdn.jsdelivr.net', 'https://subzero.axisbank.com'],
-    'media-src': ['https://youtube.com']
+    'style-src': [`'unsafe-inline'`]
   }
 }
 
