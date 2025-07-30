@@ -142,7 +142,7 @@ Please Node: if you are running script for the first time, you may need to creat
       template: './public/index.ejs',
       templateParameters: {
         ...parsed,
-        PRECONNECT_DOMAINS: process.env.PRECONNECT_DOMAINS,
+        PRE_CONNECT: process.env.PRE_CONNECT,
         DNS_PREFETCH: process.env.DNS_PREFETCH
       },
       title: manifestConfig.appShortName || manifestConfig.appName,
