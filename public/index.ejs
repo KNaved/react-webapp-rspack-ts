@@ -9,9 +9,9 @@
       <% }); %>
     <% } %>
 
-    <% if (DNS_PREFETCH_DOMAINS && DNS_PREFETCH_DOMAINS.length) { %>
-      <% DNS_PREFETCH_DOMAINS = DNS_PREFETCH_DOMAINS.split(',') %>
-      <% DNS_PREFETCH_DOMAINS.forEach(function(PREFETCH_DOMAIN){ %>
+    <% if (DNS_PREFETCH && DNS_PREFETCH.length) { %>
+      <% DNS_PREFETCH = DNS_PREFETCH.split(',') %>
+      <% DNS_PREFETCH.forEach(function(PREFETCH_DOMAIN){ %>
         <link rel="dns-prefetch" href="<%= PREFETCH_DOMAIN %>" />
       <% }); %>
     <% } %>
