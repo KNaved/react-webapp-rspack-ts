@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
     <% if (PRE_CONNECT && PRE_CONNECT.length) { %>
       <% PRE_CONNECT = PRE_CONNECT.split(',') %>
       <% PRE_CONNECT.forEach(function(PRE_CONNECT_DOMAIN){ %>
@@ -21,32 +20,38 @@
     <% } %>
 
     <%- htmlPlugin.tags.headTags %>
+
+    <!-- Link Tags -->
+    <link
+      rel="stylesheet"
+      media="print"
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
+    />
+    <link
+      rel="stylesheet"
+      media="print"
+      href="https://subzero.axisbank.com/fonts/lato.css"
+    />
+    <!-- Link Tags -->
+
+    <!-- Script Tags -->
+    <script defer src="/static/js/stylesheetloader.js"></script>
     <script defer src="/static/js/variables.js"></script>
     <script nomodule src="/static/js/unsupportedImport.js"></script>
-  <link
-    rel="stylesheet"
-    media="print"
-    onload='this.media="all"'
-    href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
-  />
-  <link
-    rel="stylesheet"
-    media="print"
-    onload='this.media="all"'
-    href="https://subzero.axisbank.com/fonts/lato.css"
-  />
-  <noscript>
-    <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-    <link
-      href="https://subzero.axisbank.com/fonts/lato.css"
-      rel="stylesheet"
-      type="text/css"
-    />
-  </noscript>
+    <!-- Script Tags -->
+
+    <noscript>
+      <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@3.2.0/fonts/remixicon.css"
+        rel="stylesheet"
+        type="text/css"
+      />
+      <link
+        href="https://subzero.axisbank.com/fonts/lato.css"
+        rel="stylesheet"
+        type="text/css"
+      />
+    </noscript>
   </head>
 
   <body>
