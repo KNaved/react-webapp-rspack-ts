@@ -165,7 +165,6 @@ Please Node: if you are running script for the first time, you may need to creat
           for (const tag of tags) {
             if (tag.attrs?.rel === 'stylesheet') {
               tag.attrs.media = 'print'
-              tag.attrs.onload = "this.media='all'"
             }
           }
         }
