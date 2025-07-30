@@ -1,6 +1,21 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+
+    <% if (PRECONNECT_DOMAINS && PRECONNECT_DOMAINS.length) { %>
+      <% PRECONNECT_DOMAINS = PRECONNECT_DOMAINS.split(',') %>
+      <% PRECONNECT_DOMAINS.forEach(function(PRECONNECT_DOMAIN){ %>
+        <link rel="preconnect" href="<%= PRECONNECT_DOMAIN %>" />
+      <% }); %>
+    <% } %>
+
+    <% if (DNS_PREFETCH_DOMAINS && DNS_PREFETCH_DOMAINS.length) { %>
+      <% DNS_PREFETCH_DOMAINS = DNS_PREFETCH_DOMAINS.split(',') %>
+      <% DNS_PREFETCH_DOMAINS.forEach(function(PREFETCH_DOMAIN){ %>
+        <link rel="dns-prefetch" href="<%= PREFETCH_DOMAIN %>" />
+      <% }); %>
+    <% } %>
+
     <%- htmlPlugin.tags.headTags %>
     <script defer src="/static/js/variables.js"></script>
     <script nomodule src="/static/js/unsupportedImport.js"></script>
