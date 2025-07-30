@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 
+import DynatraceHelper from './Helpers/Dynatrace.Helper'
+
 // @ts-expect-error since it is js file
 import supportedBrowsers from '~/public/static/js/supportedBrowsers.js'
 import SomethingWentWrongPage from '~/src/Pages/SomethingWentWrong/SomethingWentWrong.Page'
@@ -62,6 +64,7 @@ export default class AppErrorBoundary extends Component<
         : error.message
 
     console.error('Global Error caught:', message)
+    DynatraceHelper.logError(message, 'Global Error Detected')
     const errorComponentCode = getErrorComponentCode()
     this.setState({ errorComponentCode })
     return true

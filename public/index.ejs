@@ -16,6 +16,10 @@
       <% }); %>
     <% } %>
 
+    <% if (APP_DYNATRACE_LINK && APP_DYNATRACE_LINK.length) { %>
+      <script defer type="text/javascript" src="<% APP_DYNATRACE_LINK %>" crossorigin="anonymous" ></script>
+    <% } %>
+
     <%- htmlPlugin.tags.headTags %>
     <script defer src="/static/js/variables.js"></script>
     <script nomodule src="/static/js/unsupportedImport.js"></script>
