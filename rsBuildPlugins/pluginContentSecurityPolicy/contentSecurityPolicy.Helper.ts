@@ -1,8 +1,21 @@
 import {
   DEFAULT_CSP_VALUES,
+  HANDLE_EMPTY_CASES,
   type TCspSource,
   type TCspValuesType
 } from './contentSecurityPolicy.Type'
+
+const handleEmptyCase = (
+  cspString: string,
+  mergedCspValues: Map<keyof TCspValuesType, Set<TCspSource>>,
+  dir: keyof TCspValuesType
+): string => {
+  const directive = mergedCspValues.get(dir)
+  if (!directive || directive.size === 0) {
+    cspString += `${dir} 'none'; `
+  }
+  return cspString
+}
 
 /** Function mergeCSPValues - Merge to CSP objects
  * It should merge all the keys ie directive of CSP object
@@ -58,27 +71,31 @@ export const getCSPHeader = ({
   linksIntegrity: TCspSource[]
 }) => {
   let mergedCspValues: Map<keyof TCspValuesType, Set<TCspSource>> = new Map()
+
+  let integrityCspValues: TCspValuesType = {}
+
   // Merge default CSP values with integrity and nonce value
   if (
     (scriptsIntegrity && scriptsIntegrity.length) ||
     (linksIntegrity && linksIntegrity.length)
   ) {
     // if nonce is disabled then don't add
-    const integrityCspValues: TCspValuesType = {
+    integrityCspValues = {
       'script-src': [...scriptsIntegrity],
       'style-src': [...linksIntegrity]
     }
-    const nonceVal = linkNonceValue.length ? `'nonce-${linkNonceValue}'` : ''
-    if (nonceVal) {
-      integrityCspValues['style-src']?.push(nonceVal as TCspSource)
-    }
-
-    mergedCspValues = mergeCSPValues(
-      DEFAULT_CSP_VALUES,
-      cspValues,
-      integrityCspValues
-    )
   }
+
+  if (linkNonceValue) {
+    const nonceVal = `'nonce-${linkNonceValue}'`
+    integrityCspValues['style-src']?.push(nonceVal as TCspSource)
+  }
+
+  mergedCspValues = mergeCSPValues(
+    DEFAULT_CSP_VALUES,
+    cspValues,
+    integrityCspValues
+  )
 
   let cspString = ''
   mergedCspValues.forEach((value, key) => {
@@ -90,23 +107,14 @@ export const getCSPHeader = ({
     cspString += `${key} ${Array.from(value).join(' ')}; `
   })
 
-  // Explicity handling for some directives
-  const mediaSrc = mergedCspValues.get('media-src')
-  if (!mediaSrc || mediaSrc.size === 0) {
-    cspString += `media-src 'none'; `
-  }
-
-  // Explicity handling for some directives
-  const objectSrc = mergedCspValues.get('object-src')
-  if (!objectSrc || objectSrc.size === 0) {
-    cspString += `object-src 'none'; `
-  }
-
-  // Explicity handling for some directives
-  // const frameSrc = mergedCspValues.get('frame-src')
-  // if (!frameSrc || frameSrc.size === 0) {
-  //   cspString += `frame-src 'none'; `
-  // }
+  // handle empty cases set none
+  HANDLE_EMPTY_CASES.forEach(dir => {
+    cspString = handleEmptyCase(
+      cspString,
+      mergedCspValues,
+      dir as keyof TCspValuesType
+    )
+  })
 
   return cspString
 }
