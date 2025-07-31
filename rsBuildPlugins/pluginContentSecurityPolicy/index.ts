@@ -27,7 +27,9 @@ export const pluginContentSecurityPolicy = (
   setup: async (api: RsbuildPluginAPI) => {
     const { config } = options
 
-    const { userDefinedCsp } = config
+    const { userDefinedCsp, scriptDirective, styleDirective } = config
+    const { hashEnabled: scriptHashEnabled = true } = scriptDirective
+    const { hashEnabled: styleHashEnabled = false } = styleDirective
 
     // Get RsBuild configuration
     const rsBuildConfig = api.getRsbuildConfig()
@@ -80,16 +82,24 @@ export const pluginContentSecurityPolicy = (
       const scriptsIntegrity: TCspSource[] = []
       const linksIntegrity: TCspSource[] = []
 
-      const scriptsElem = $('script')
-      for (let i = 0; i < scriptsElem.length; i++) {
-        const elem = $(scriptsElem[i])
-        scriptsIntegrity.push(elem.attr('integrity') as TCspSource)
+      if (scriptHashEnabled) {
+        const scriptsElem = $('script')
+        for (let i = 0; i < scriptsElem.length; i++) {
+          const elem = $(scriptsElem[i])
+          if (elem.attr('integrity')) {
+            scriptsIntegrity.push(`'${elem.attr('integrity')}'` as TCspSource)
+          }
+        }
       }
 
-      const linksElem = $('link')
-      for (let i = 0; i < linksElem.length; i++) {
-        const elem = $(linksElem[i])
-        linksIntegrity.push(elem.attr('integrity') as TCspSource)
+      if (styleHashEnabled) {
+        const linksElem = $('link')
+        for (let i = 0; i < linksElem.length; i++) {
+          const elem = $(linksElem[i])
+          if (elem.attr('integrity')) {
+            linksIntegrity.push(`'${elem.attr('integrity')}'` as TCspSource)
+          }
+        }
       }
 
       /**

@@ -42,8 +42,14 @@ export type TCspValuesType = {
   // ... add other CSP directives as needed
 }
 
+type TDirectiveDefaultConfig = {
+  hashEnabled: boolean
+}
+
 export type TPluginContentSecurityPolicyConfig = {
   userDefinedCsp: TCspValuesType
+  scriptDirective: TDirectiveDefaultConfig
+  styleDirective: TDirectiveDefaultConfig
 }
 
 export type TPluginContentSecurityPolicy = {
@@ -64,3 +70,11 @@ export const DEFAULT_CSP_VALUES: TCspValuesType = {
 }
 
 export const CONF_FILE_NAME = 'security_headers.conf'
+
+export const HANDLE_EMPTY_CASES = [
+  'media-src',
+  'object-src',
+  'connect-src',
+  'frame-src',
+  'frame-ancestors'
+]
