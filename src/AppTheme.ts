@@ -1,4 +1,4 @@
-import '@fontsource-variable/inter/opsz.css'
+// import '@fontsource-variable/inter/opsz.css'
 
 // import { experimental_extendTheme as extendTheme } from '@mui/material'
 
