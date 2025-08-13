@@ -22,6 +22,7 @@ import { pluginFavicon } from './rsBuildPlugins/Favicon'
 import WebpackObfuscatorPlugin from './rsBuildPlugins/pluginCodeObfuscator/WebpackObfuscatorPlugin'
 import { pluginContentSecurityPolicy } from './rsBuildPlugins/pluginContentSecurityPolicy'
 import { pluginCreateAssetIntegrity } from './rsBuildPlugins/pluginCreateAssetIntegrity'
+import { pluginPublicFolderSourceMapGenerator } from './rsBuildPlugins/pluginPublicFolderSourceMapGenerator'
 import { pluginRenameAssetsAndReferences } from './rsBuildPlugins/pluginRenameAssetsAndReferences'
 
 export default defineConfig(({ envMode, env }) => {
@@ -76,7 +77,8 @@ Please Node: if you are running script for the first time, you may need to creat
       pluginCreateAssetIntegrity(),
       pluginContentSecurityPolicy({
         config: cspConfig
-      })
+      }),
+      pluginPublicFolderSourceMapGenerator()
     )
   }
 
@@ -131,7 +133,12 @@ Please Node: if you are running script for the first time, you may need to creat
           from: './public',
           to: './',
           globOptions: {
-            ignore: ['**/favicon.svg', '**/index.ejs']
+            ignore: [
+              '**/favicon.svg',
+              '**/index.ejs',
+              // Handle public folder source map generation plugin
+              '**/*.js'
+            ]
           }
         }
       ]
