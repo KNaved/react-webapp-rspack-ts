@@ -111,6 +111,7 @@ const routeObj: RouteObject[] = [
   {
     element: MainLayout,
     HydrateFallback: Loader,
+    // Error boundary component is necessary to over ride default react router error boundary
     errorElement: <ErrorBoundary />,
     children: [
       {
@@ -128,6 +129,7 @@ const routeObj: RouteObject[] = [
   {
     element: ErrorLayout,
     HydrateFallback: Loader,
+    // Error boundary component is necessary to over ride default react router error boundary
     errorElement: <ErrorBoundary />,
     children: [
       {

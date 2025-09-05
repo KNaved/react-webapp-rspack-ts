@@ -1,9 +1,8 @@
 import React, { Component } from 'react'
 
-import DynatraceHelper from './Helpers/Dynatrace.Helper'
-
 // @ts-expect-error since it is js file
 import supportedBrowsers from '~/public/static/js/supportedBrowsers.js'
+import DynatraceHelper from '~/src/Helpers/Dynatrace.Helper'
 import SomethingWentWrongPage from '~/src/Pages/SomethingWentWrong/SomethingWentWrong.Page'
 import UnsupportedBrowsersPage from '~/src/Pages/UnsupportedBrowsers/UnsupportedBrowsers.Page'
 
@@ -43,31 +42,9 @@ export default class AppErrorBoundary extends Component<
     return { errorComponentCode: getErrorComponentCode() }
   }
 
-  // TODO: Move this to a global error handler
-  componentDidMount() {
-    // Set up global error listener
-    window.addEventListener('error', this.handleGlobalError)
-    // Catch unhandled promise rejections
-    window.addEventListener('unhandledrejection', this.handleGlobalError)
-  }
-
-  componentWillUnmount() {
-    // Cleanup error listeners
-    window.removeEventListener('error', this.handleGlobalError)
-    window.removeEventListener('unhandledrejection', this.handleGlobalError)
-  }
-
-  handleGlobalError = (error: ErrorEvent | PromiseRejectionEvent) => {
-    const message =
-      typeof error === 'object' && 'reason' in error
-        ? error.reason
-        : error.message
-
-    console.error('Global Error caught:', message)
-    DynatraceHelper.logError(message, 'Global Error Detected')
-    const errorComponentCode = getErrorComponentCode()
-    this.setState({ errorComponentCode })
-    return true
+  componentDidCatch(error: Error) {
+    console.error('Global Error caught:', error.message)
+    DynatraceHelper.logError(error.message, 'Global Error Detected')
   }
 
   render() {
