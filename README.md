@@ -43,7 +43,7 @@ Each commit message **must** follow the structure:
 <footer>(References: <JIRA-ID>)
 ```
 
-### 🧱 Commit Parts Breakdown
+### �� Commit Parts Breakdown
 
 | Part     | Required| Description |
 |----------|---------|-------------|
@@ -98,3 +98,12 @@ You can create **conventional commits** using any of the following methods:
    References: JIRA-1234"
    ```
    `Note:` Use Shift + Option + Enter to insert a newline inside the -m string when writing the commit in your terminal.
+
+
+### CSP Update Note:
+
+> Subzero URL in `index.ejs` has been updated from
+> `https://subzero.axisbank.com` → `https://subzero.axis.bank.in`
+>
+> Please ensure that the **CSP `style-src` and `font-src` directives** are also updated to replace the old URL with
+> `https://subzero.axis.bank.in` in your configuration.
