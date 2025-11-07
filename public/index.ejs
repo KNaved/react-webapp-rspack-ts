@@ -18,6 +18,10 @@
     <% if (APP_DYNATRACE_LINK && APP_DYNATRACE_LINK.length) { %>
       <script defer type="text/javascript" src="<%= APP_DYNATRACE_LINK %>" crossorigin="anonymous" ></script>
     <% } %>
+    <!-- Script Tags -->
+    <script defer src="/static/js/supportedBrowsers.js"></script>
+    <script nomodule src="/static/js/unsupportedImport.js"></script>
+    <!-- Script Tags -->
 
     <%- htmlPlugin.tags.headTags %>
 
@@ -37,8 +41,6 @@
     <!-- Script Tags -->
     <script defer src="/static/js/stylesheetloader.js"></script>
     <script defer src="/static/js/variables.js"></script>
-    <script defer src="/static/js/supportedBrowsers.js"></script>
-    <script nomodule src="/static/js/unsupportedImport.js"></script>
     <!-- Script Tags -->
 
     <noscript>
