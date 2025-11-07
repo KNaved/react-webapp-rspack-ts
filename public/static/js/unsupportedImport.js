@@ -1,14 +1,15 @@
+// @ts-nocheck
 /* eslint no-var: 0 */ // --> OFF
 /* eslint no-undef: 0 */ // --> OFF
-var supportedBrowsers = require('./supportedBrowsers.js')(function () {
+;(function () {
   try {
     // Test for native `import` statement support
     new Function('import("")')
   } catch (err) {
-    if (err instanceof SyntaxError) {
+    if (err instanceof SyntaxError && window.supportedBrowsers) {
       // biome-ignore lint/style/noVar: want this js to be es5
       // biome-ignore lint/correctness/noInnerDeclarations: want to test support only if import not supported
-      var isSupportedBrowser = supportedBrowsers.test(
+      var isSupportedBrowser = window.supportedBrowsers.test(
         window.navigator.userAgent
       )
 

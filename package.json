@@ -12,7 +12,7 @@
     "doctor": "RSDOCTOR=true npm run build",
     "lint": "npm run tsc:lint && npm run eslint",
     "preview": "rsbuild preview --open",
-    "supportedBrowsers": "echo \"// eslint-disable-next-line no-undef \n module.exports = $(browserslist-useragent-regexp --allowHigherVersions);\" > ./public/static/js/supportedBrowsers.js",
+    "supportedBrowsers": "echo \"// @ts-nocheck\nif (!window.supportedBrowsers) {\nObject.defineProperty(window, 'supportedBrowsers', {\nvalue:$(browserslist-useragent-regexp --allowHigherVersions),\nconfigurable: false,\nwritable: false\n})\n}\" > ./public/static/js/supportedBrowsers.js",
     "tsc:lint": "tsc --noEmit"
   },
   "dependencies": {

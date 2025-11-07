@@ -105,8 +105,9 @@ Please Node: if you are running script for the first time, you may need to creat
       define: publicVars,
       entry: {
         index: {
-          import: './src/index.tsx',
-          runtime: 'index.runtime'
+          import: './src/index.tsx'
+          // TODO: Enable runtime splitting when the plugin pluginPublicFolderSourceMapGenerator is updated to support it
+          // runtime: 'index.runtime'
         }
       }
     },
