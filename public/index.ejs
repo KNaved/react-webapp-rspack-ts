@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-
     <% if (PRE_CONNECT && PRE_CONNECT.length) { %>
       <% PRE_CONNECT = PRE_CONNECT.split(',') %>
       <% PRE_CONNECT.forEach(function(PRE_CONNECT_DOMAIN){ %>
@@ -18,12 +17,10 @@
 
     <%- htmlPlugin.tags.headTags %>
 
-    <!-- Link Tags -->
-    <!-- Link Tags -->
-
     <!-- Script Tags -->
     <script defer src="/static/js/stylesheetloader.js"></script>
     <script defer src="/static/js/variables.js"></script>
+    <script defer src="/static/js/supportedBrowsers.js"></script>
     <script nomodule src="/static/js/unsupportedImport.js"></script>
     <!-- Script Tags -->
   </head>

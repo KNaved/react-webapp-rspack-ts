@@ -18,3 +18,7 @@ declare module '*.svg' {
 
   export default ReactComponent
 }
+
+interface Window {
+  supportedBrowsers: RegExp
+}

@@ -1,7 +1,5 @@
 import React, { Component } from 'react'
 
-// @ts-expect-error since it is js file
-import supportedBrowsers from '~/public/static/js/supportedBrowsers.js'
 import SomethingWentWrongPage from '~/src/Pages/SomethingWentWrong/SomethingWentWrong.Page'
 import UnsupportedBrowsersPage from '~/src/Pages/UnsupportedBrowsers/UnsupportedBrowsers.Page'
 
@@ -16,7 +14,7 @@ export interface IAppErrorBoundaryState {
 }
 
 const getErrorComponentCode = (): TErrorComponentCode => {
-  const isSupported = supportedBrowsers.test(navigator.userAgent)
+  const isSupported = window.supportedBrowsers.test(navigator.userAgent)
   const errorComponentCode =
     (isSupported && 'SOMETHING_WENT_WRONG') || 'BROWSER_NOT_SUPPORTED'
   return errorComponentCode
