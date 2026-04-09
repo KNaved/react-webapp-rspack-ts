@@ -16,8 +16,10 @@
     "tsc:lint": "tsc --noEmit"
   },
   "dependencies": {
-    "@am92/react-design-system": "2.9.9",
+    "@am92/react-design-system": "2.10.6",
     "@am92/web-http": "2.0.29",
+    "@emotion/cache": "^11.14.0",
+    "@emotion/react": "^11.14.0",
     "@reduxjs/toolkit": "2.8.2",
     "disable-devtool": "0.3.8",
     "localforage": "1.10.0",

@@ -27,7 +27,12 @@ export const pluginContentSecurityPolicy = (
   setup: async (api: RsbuildPluginAPI) => {
     const { config } = options
 
-    const { userDefinedCsp, scriptDirective, styleDirective } = config
+    const {
+      userDefinedCsp,
+      scriptDirective,
+      styleDirective,
+      linkNonceValue = ''
+    } = config
     const { hashEnabled: scriptHashEnabled = true } = scriptDirective
     const { hashEnabled: styleHashEnabled = false } = styleDirective
 
@@ -109,7 +114,7 @@ export const pluginContentSecurityPolicy = (
        */
       const cspContent = getCSPHeader({
         cspValues: userDefinedCsp,
-        linkNonceValue: '',
+        linkNonceValue,
         scriptsIntegrity,
         linksIntegrity
       })

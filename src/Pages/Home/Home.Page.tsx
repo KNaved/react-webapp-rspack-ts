@@ -17,6 +17,8 @@ const HomePage: FC = () => {
   const dispatch = useDispatch()
   const { scheme } = useSelector(getThemeReducer)
 
+  console.log('scheme', scheme)
+
   const handleSchemeChange = (_name: string, value: boolean) => {
     const newScheme = value ? 'dark' : 'light'
     dispatch(setThemeSchemeAction(newScheme))

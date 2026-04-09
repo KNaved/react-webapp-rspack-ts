@@ -24,11 +24,14 @@ const ThemeManager: FC = () => {
   const { colorScheme, setColorScheme } = useColorScheme()
 
   const handleStorage = ({ newValue }: StorageEvent) => {
+    console.log('Storage event detected. New color scheme:', newValue)
     if (newValue && newValue !== scheme && isSupportedColorScheme(newValue)) {
       dispatch(setThemeSchemeAction(newValue))
     }
   }
 
+  console.log('Current color scheme from useColorScheme:', colorScheme)
+  console.log('Current color scheme from Redux store:', scheme)
   useEffect(() => {
     if (colorScheme !== scheme && setColorScheme) {
       setColorScheme(scheme)

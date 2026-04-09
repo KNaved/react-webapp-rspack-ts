@@ -21,4 +21,15 @@ declare module '*.svg' {
 
 interface Window {
   supportedBrowsers: RegExp
+  __nonce__: string
+}
+
+declare module '*.css' {
+  const content: string
+  export default content
+}
+
+declare module '*.scss' {
+  const content: string
+  export default content
 }
