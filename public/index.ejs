@@ -15,7 +15,10 @@
       <% }); %>
     <% } %>
 
+    <meta name="csp-nonce" content="<%= CSP_NONCE %>" />
+
     <!-- Script Tags -->
+     <script src="/static/js/nonce.js"></script>
     <script defer src="/static/js/supportedBrowsers.js"></script>
     <script nomodule src="/static/js/unsupportedImport.js"></script>
     <!-- Script Tags -->

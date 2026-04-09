@@ -50,6 +50,7 @@ export type TPluginContentSecurityPolicyConfig = {
   userDefinedCsp: TCspValuesType
   scriptDirective: TDirectiveDefaultConfig
   styleDirective: TDirectiveDefaultConfig
+  linkNonceValue?: string
 }
 
 export type TPluginContentSecurityPolicy = {

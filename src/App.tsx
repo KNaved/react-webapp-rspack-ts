@@ -1,6 +1,8 @@
 import '~/src/App.scss'
 
 import type { FC } from 'react'
+import createCache from '@emotion/cache'
+import { CacheProvider } from '@emotion/react'
 import { CssBaseline } from '@mui/material'
 import { ThemeProvider } from '@mui/material/styles'
 
@@ -18,16 +20,27 @@ export interface IAppProps {
 const App: FC<IAppProps> = props => {
   const { persisted } = props
 
+  const nonce = window.__nonce__
+
+  const emotionCache = createCache({
+    key: 'mui',
+    nonce,
+    // prepend: true, // ymmv
+    speedy: false // <--- key setting
+  })
+
   return (
-    <ThemeProvider theme={AppTheme} modeStorageKey={THEME_MODE_STORAGE_KEY}>
-      <CssBaseline>
-        {persisted && (
-          <AppErrorBoundary>
-            <AppInitializer />
-          </AppErrorBoundary>
-        )}
-      </CssBaseline>
-    </ThemeProvider>
+    <CacheProvider value={emotionCache}>
+      <ThemeProvider theme={AppTheme} modeStorageKey={THEME_MODE_STORAGE_KEY}>
+        <CssBaseline>
+          {persisted && (
+            <AppErrorBoundary>
+              <AppInitializer />
+            </AppErrorBoundary>
+          )}
+        </CssBaseline>
+      </ThemeProvider>
+    </CacheProvider>
   )
 }
 

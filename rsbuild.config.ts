@@ -22,6 +22,7 @@ import { pluginFavicon } from './rsBuildPlugins/Favicon'
 import WebpackObfuscatorPlugin from './rsBuildPlugins/pluginCodeObfuscator/WebpackObfuscatorPlugin'
 import { pluginContentSecurityPolicy } from './rsBuildPlugins/pluginContentSecurityPolicy'
 import { pluginCreateAssetIntegrity } from './rsBuildPlugins/pluginCreateAssetIntegrity'
+import { generateNonceValue } from './rsBuildPlugins/pluginCreateAssetIntegrity/createAssetIntegrity.Helper'
 import { pluginPublicFolderSourceMapGenerator } from './rsBuildPlugins/pluginPublicFolderSourceMapGenerator'
 import { pluginRenameAssetsAndReferences } from './rsBuildPlugins/pluginRenameAssetsAndReferences'
 
@@ -30,6 +31,8 @@ export default defineConfig(({ envMode, env }) => {
   const pwaEnabled = process.env.APP_PWA_ENABLE === 'true'
   const codeInspectorEnabled = process.env.APP_DEV_INSPECTION_ENABLED === 'true'
   const isProduction = envMode === 'production'
+
+  const nonceValue = generateNonceValue() // static nonce generation
 
   const { publicVars, parsed, filePaths } = loadEnv({
     prefixes: ['APP_', 'AS_', 'npm_package_'],
@@ -76,7 +79,10 @@ Please Node: if you are running script for the first time, you may need to creat
       pluginRenameAssetsAndReferences(),
       pluginCreateAssetIntegrity(),
       pluginContentSecurityPolicy({
-        config: cspConfig
+        config: {
+          ...cspConfig,
+          linkNonceValue: nonceValue
+        }
       }),
       pluginPublicFolderSourceMapGenerator()
     )
@@ -150,8 +156,9 @@ Please Node: if you are running script for the first time, you may need to creat
       template: './public/index.ejs',
       templateParameters: {
         ...parsed,
-        PRE_CONNECT: process.env.PRE_CONNECT,
-        DNS_PREFETCH: process.env.DNS_PREFETCH
+        PRE_CONNECT: process.env.PRE_CONNECT || '',
+        DNS_PREFETCH: process.env.DNS_PREFETCH || '',
+        CSP_NONCE: nonceValue
       },
       title: manifestConfig.appShortName || manifestConfig.appName,
       meta: {
