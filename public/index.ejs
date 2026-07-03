@@ -1,9 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <%- htmlPlugin.tags.headTags %>
-    <script defer src="/static/js/variables.js"></script>
+    <% if (PRE_CONNECT && PRE_CONNECT.length) { %>
+      <% PRE_CONNECT = PRE_CONNECT.split(',') %>
+      <% PRE_CONNECT.forEach(function(PRE_CONNECT_DOMAIN){ %>
+        <link rel="preconnect" href="<%= PRE_CONNECT_DOMAIN %>" />
+      <% }); %>
+    <% } %>
+
+    <% if (DNS_PREFETCH && DNS_PREFETCH.length) { %>
+      <% DNS_PREFETCH = DNS_PREFETCH.split(',') %>
+      <% DNS_PREFETCH.forEach(function(PREFETCH_DOMAIN){ %>
+        <link rel="dns-prefetch" href="<%= PREFETCH_DOMAIN %>" />
+      <% }); %>
+    <% } %>
+
+    <% if (APP_DYNATRACE_LINK && APP_DYNATRACE_LINK.length) { %>
+      <script defer type="text/javascript" src="<%= APP_DYNATRACE_LINK %>" crossorigin="anonymous" ></script>
+    <% } %>
+    <meta name="csp-nonce" content="<%= CSP_NONCE %>" />
+
+    <!-- Script Tags -->
+     <script src="/static/js/nonce.js"></script>
+    <script defer src="/static/js/supportedBrowsers.js"></script>
     <script nomodule src="/static/js/unsupportedImport.js"></script>
+    <!-- Script Tags -->
+
+    <%- htmlPlugin.tags.headTags %>
+
+    <!-- Link Tags -->
+    <link
+      rel="stylesheet"
+      media="print"
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css"
+    />
+    <link
+      rel="stylesheet"
+      media="print"
+      href="https://subzero.axis.bank.in/fonts/lato.css"
+    />
+    <!-- Link Tags -->
+
+    <!-- Script Tags -->
+    <script defer src="/static/js/stylesheetloader.js"></script>
+    <script defer src="/static/js/variables.js"></script>
+    <!-- Script Tags -->
+
+    <noscript>
+      <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css"
+        rel="stylesheet"
+        type="text/css"
+      />
+      <link
+        href="https://subzero.axis.bank.in/fonts/lato.css"
+        rel="stylesheet"
+        type="text/css"
+      />
+    </noscript>
   </head>
 
   <body>

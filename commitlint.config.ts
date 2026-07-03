@@ -9,7 +9,7 @@ const configuration: UserConfig = {
     // 'type-enum': [2,'always', ['feat', 'fix', 'docs', 'style', 'refactor', 'perf', 'test', 'build', 'ci', 'chore', 'revert']],
     'scope-empty': [0, 'never'],
     'scope-enum': [
-      0,
+      2,
       'always',
       [
         'env',
@@ -18,28 +18,36 @@ const configuration: UserConfig = {
         'breaking-change',
         'error',
         'commit-lint',
-        'config'
+        'config',
+        'layout',
+        'theme',
+        'css',
+        'router',
+        'eslint',
+        'plugin',
+        'hooks',
+        'scripts',
+        'auth',
+        'csp',
+        'changelog',
+        'api',
+        'migration',
+        'vulnerability',
+        'tests',
+        'mocks'
       ]
     ], // define allowed scopes as per your project
     'subject-empty': [2, 'never'],
     'subject-case': [2, 'always', 'sentence-case'], // sentence case summary
     'header-full-stop': [2, 'never', '.'], // no full stop at the end of header
 
-    // Body
-    'body-empty': [2, 'never'],
+    // Body is optional
+    'body-empty': [0, 'never'],
     'body-leading-blank': [2, 'always'],
 
-    // Footer
-    'footer-empty': [2, 'never'],
-    'footer-leading-blank': [2, 'always'],
-    // Trailer token must exist
-    'trailer-exists': [2, 'always', 'References']
-    // 'references-empty': [2, 'never'], // references values (Fixes, Closes, Resolves)
-  },
-  parserPreset: {
-    parserOpts: {
-      noteKeywords: ['References'] // parser preset to help Commitlint recognize custom trailers
-    }
+    // Footer is optional
+    'footer-empty': [0, 'never'],
+    'footer-leading-blank': [2, 'always']
   }
 }
 

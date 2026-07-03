@@ -1,8 +1,8 @@
 import type { FC } from 'react'
-import { Typography } from '@mui/material'
+import { DsTypography } from '@am92/react-design-system'
 
 const NotFoundPage: FC = () => {
-  return <Typography variant='h2'>Not Found</Typography>
+  return <DsTypography variant='displayBoldLarge'>Not Found</DsTypography>
 }
 
 export default NotFoundPage

@@ -1,5 +1,10 @@
 import { GenerateSW } from '@aaroon/workbox-rspack-plugin'
-import { defineConfig, loadEnv, type RsbuildConfig } from '@rsbuild/core'
+import {
+  defineConfig,
+  loadEnv,
+  type RsbuildConfig,
+  type SriAlgorithm
+} from '@rsbuild/core'
 import { pluginAssetsRetry } from '@rsbuild/plugin-assets-retry'
 import { pluginBasicSsl } from '@rsbuild/plugin-basic-ssl'
 import { pluginNodePolyfill } from '@rsbuild/plugin-node-polyfill'
@@ -10,10 +15,15 @@ import { codeInspectorPlugin } from 'code-inspector-plugin'
 import { pluginEjs } from 'rsbuild-plugin-ejs'
 import { pluginHtmlMinifierTerser } from 'rsbuild-plugin-html-minifier-terser'
 
+import cspConfig from './csp.config'
 import manifestConfig from './manifest.config'
 import obfuscatorConfig from './obfuscator.config'
 import { pluginFavicon } from './rsBuildPlugins/Favicon'
 import WebpackObfuscatorPlugin from './rsBuildPlugins/pluginCodeObfuscator/WebpackObfuscatorPlugin'
+import { pluginContentSecurityPolicy } from './rsBuildPlugins/pluginContentSecurityPolicy'
+import { pluginCreateAssetIntegrity } from './rsBuildPlugins/pluginCreateAssetIntegrity'
+import { generateNonceValue } from './rsBuildPlugins/pluginCreateAssetIntegrity/createAssetIntegrity.Helper'
+import { pluginPublicFolderSourceMapGenerator } from './rsBuildPlugins/pluginPublicFolderSourceMapGenerator'
 import { pluginRenameAssetsAndReferences } from './rsBuildPlugins/pluginRenameAssetsAndReferences'
 
 export default defineConfig(({ envMode, env }) => {
@@ -22,10 +32,16 @@ export default defineConfig(({ envMode, env }) => {
   const codeInspectorEnabled = process.env.APP_DEV_INSPECTION_ENABLED === 'true'
   const isProduction = envMode === 'production'
 
+  const nonceValue = generateNonceValue() // static nonce generation
+
   const { publicVars, parsed, filePaths } = loadEnv({
     prefixes: ['APP_', 'AS_', 'npm_package_'],
     mode: envMode || process.env.NODE_ENV || 'development'
   })
+
+  // Handle env-mode based code in the application
+  parsed.APP_ENV_IS_PRODUCTION = `${isProduction}`
+  publicVars.APP_ENV_IS_PRODUCTION = `${isProduction}`
 
   if (!filePaths.length) {
     console.warn(`
@@ -55,20 +71,26 @@ Please Node: if you are running script for the first time, you may need to creat
 
   if (isProdBuild) {
     rsBuildPlugins.push(
-      pluginAssetsRetry(),
+      pluginAssetsRetry({
+        inlineScript: false
+      }),
       pluginHtmlMinifierTerser(),
       pluginFavicon('./public/favicon.svg', manifestConfig),
-      pluginRenameAssetsAndReferences()
+      pluginRenameAssetsAndReferences(),
+      pluginCreateAssetIntegrity(),
+      pluginContentSecurityPolicy({
+        config: {
+          ...cspConfig,
+          linkNonceValue: nonceValue
+        }
+      }),
+      pluginPublicFolderSourceMapGenerator()
     )
   }
 
   if (process.env.HTTPS === 'true') {
     rsBuildPlugins.push(pluginBasicSsl())
   }
-
-  // Split and filter blank values
-  const dnsPrefetch = process.env.DNS_PREFETCH?.split(',').filter(n => n)
-  const preConnect = process.env.PRE_CONNECT?.split(',').filter(n => n)
 
   const config: RsbuildConfig = {
     dev: {
@@ -89,8 +111,9 @@ Please Node: if you are running script for the first time, you may need to creat
       define: publicVars,
       entry: {
         index: {
-          import: './src/index.tsx',
-          runtime: 'index.runtime'
+          import: './src/index.tsx'
+          // TODO: Enable runtime splitting when the plugin pluginPublicFolderSourceMapGenerator is updated to support it
+          // runtime: 'index.runtime'
         }
       }
     },
@@ -117,7 +140,12 @@ Please Node: if you are running script for the first time, you may need to creat
           from: './public',
           to: './',
           globOptions: {
-            ignore: ['**/favicon.svg', '**/index.ejs']
+            ignore: [
+              '**/favicon.svg',
+              '**/index.ejs',
+              // Handle public folder source map generation plugin
+              '**/*.js'
+            ]
           }
         }
       ]
@@ -126,7 +154,13 @@ Please Node: if you are running script for the first time, you may need to creat
     plugins: rsBuildPlugins,
     html: {
       template: './public/index.ejs',
-      templateParameters: parsed,
+      templateParameters: {
+        ...parsed,
+        PRE_CONNECT: process.env.PRE_CONNECT || '',
+        DNS_PREFETCH: process.env.DNS_PREFETCH || '',
+        APP_DYNATRACE_LINK: process.env.APP_DYNATRACE_LINK || '',
+        CSP_NONCE: nonceValue
+      },
       title: manifestConfig.appShortName || manifestConfig.appName,
       meta: {
         description: manifestConfig.appDescription || '',
@@ -147,7 +181,6 @@ Please Node: if you are running script for the first time, you may need to creat
           for (const tag of tags) {
             if (tag.attrs?.rel === 'stylesheet') {
               tag.attrs.media = 'print'
-              tag.attrs.onload = "this.media='all'"
             }
           }
         }
@@ -166,9 +199,7 @@ Please Node: if you are running script for the first time, you may need to creat
             return new RegExp(`^.*?\/${name}.*.${ext}$`)
           })
         }) ||
-        undefined,
-      dnsPrefetch: (dnsPrefetch?.length && dnsPrefetch) || undefined,
-      preconnect: (preConnect?.length && preConnect) || undefined
+        undefined
     },
     tools: {
       rspack(_config, { appendPlugins }) {
@@ -206,6 +237,12 @@ Please Node: if you are running script for the first time, you may need to creat
         if (isProdBuild) {
           appendPlugins(new WebpackObfuscatorPlugin(obfuscatorConfig, []))
         }
+      }
+    },
+    security: {
+      sri: {
+        enable: 'auto',
+        algorithm: 'sha256' as SriAlgorithm
       }
     }
   }

@@ -1,16 +1,16 @@
 import type { FC } from 'react'
 import { Outlet } from 'react-router'
-import { Stack } from '@mui/material'
+import { DsStack } from '@am92/react-design-system'
 
 const ErrorLayout: FC = () => {
   return (
-    <Stack
+    <DsStack
       justifyContent='center'
       alignItems='center'
       sx={{ height: 'var(--100vh)' }}
     >
       <Outlet />
-    </Stack>
+    </DsStack>
   )
 }
 

@@ -1,11 +1,11 @@
+import { Compilation, sources } from '@rspack/core'
+import type { Compiler } from 'image-minimizer-webpack-plugin'
 import type { ObfuscatorOptions } from 'javascript-obfuscator'
 import JavaScriptObfuscator from 'javascript-obfuscator'
 import { transfer } from 'multi-stage-sourcemap'
 import multimatch from 'multimatch'
 import type { RawSourceMap } from 'source-map'
 // TODO: Need to remove and import these from RsPack Core
-import type { Compiler } from 'webpack'
-import { Compilation, sources } from 'webpack'
 
 export type WebpackObfuscatorOptions = Omit<
   ObfuscatorOptions,
@@ -52,11 +52,11 @@ export default class WebpackObfuscatorPlugin {
 
     const pluginName = this.constructor.name
 
-    compiler.hooks.compilation.tap(pluginName, (compilation: Compilation) => {
+    compiler.hooks.compilation.tap(pluginName, compilation => {
       compilation.hooks.processAssets.tap(
         {
           name: 'WebpackObfuscator',
-          stage: Compilation.PROCESS_ASSETS_STAGE_DEV_TOOLING
+          stage: Compilation.PROCESS_ASSETS_STAGE_OPTIMIZE_COUNT
         },
         assets => {
           let identifiersPrefixCounter: number = 0

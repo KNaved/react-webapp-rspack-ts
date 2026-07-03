@@ -10,3 +10,6 @@ build/
 
 # Source Maps
 source-maps/
+
+# CSP
+security_headers.conf

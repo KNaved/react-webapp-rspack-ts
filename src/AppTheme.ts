@@ -1,11 +1,11 @@
-import '@fontsource-variable/inter/opsz.css'
+// import '@fontsource-variable/inter/opsz.css'
 
-import { extendTheme } from '@mui/material'
+// import { experimental_extendTheme as extendTheme } from '@mui/material'
 
-const AppTheme = extendTheme({
-  typography: {
-    fontFamily: 'Inter Variable, Helvetica'
-  }
-})
+// const AppTheme = extendTheme({
+//   typography: {
+//     fontFamily: 'Inter Variable, Helvetica'
+//   }
+// })
 
-export default AppTheme
+// export default AppTheme

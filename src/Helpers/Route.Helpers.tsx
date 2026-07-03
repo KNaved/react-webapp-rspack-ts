@@ -10,11 +10,12 @@ import { AppStore } from '~/src/Configurations/AppStore'
 
 export const lazyLoadPage = (
   importer: () => Promise<{ default: ComponentType }>,
+  key: string,
   Fallback?: ComponentType
 ) => {
   const Page = lazy(importer)
   const lazyPage = Fallback ? (
-    <Suspense fallback={<Fallback />}>
+    <Suspense fallback={<Fallback />} key={key}>
       <Page />
     </Suspense>
   ) : (

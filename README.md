@@ -43,15 +43,15 @@ Each commit message **must** follow the structure:
 <footer>(References: <JIRA-ID>)
 ```
 
-### 🧱 Commit Parts Breakdown
+### �� Commit Parts Breakdown
 
 | Part     | Required| Description |
 |----------|---------|-------------|
 | `type`   |   ✅    | Conventional commit type (`feat`,`fix`,`chore`,`refactor`,`docs`,`style`,`test`,`perf`,`ci`,`build`,`revert`) |
-| `scope`  |   ✅    | Scope of the change — must be one of: `env`, `redux`, `packages`, `breaking-change`, `error`, `commit-lint` |
-| `subject`|   ✅    | Short summary (lowercase, no period at the end) |
-| `body`   |   ✅    | Detailed description of what and why |
-| `footer` |   ✅    | Must contain: `References: <JIRA-ID>` (e.g., `References: JIRA-1234`) |
+| `scope`  |   ⬜     | Scope of the change — must be one of: `env`, `redux`, `packages`, `breaking-change`, `error`, `commit-lint`, `config`, `layout`, `theme`, `css`, `router`, `eslint`, `plugin`, `hooks`, `scripts`, `auth`, `csp`, `changelog`, `api`, `migration`, `vulnerability`, `tests`, `mocks` |
+| `subject`|   ✅    | Short summary (sentence-case, no period at the end) |
+| `body`   |   ⬜     | Optional, Detailed description of what and why |
+| `footer` |   ⬜      | Optional, May contain: `References: <JIRA-ID>`, `Fixes: <JIRA-ID>` (e.g., `References: JIRA-1234`) |
 
 
 
@@ -68,10 +68,42 @@ Each commit message **must** follow the structure:
   - build – changes that affect the build system or external dependencies
   - revert – reverts a previous commit
 
-#### ✅ Valid Example
+#### Sample Example
 
 ```txt
-chore(packages): update react design system package
+chore(packages): Update react design system package
+
 Update react design system package to v2.9.1
+
 References: JIRA-1234
 ```
+
+#### Ways to Create Conventional Commits
+
+You can create **conventional commits** using any of the following methods:
+
+1. **Using VS Code's Source Control panel**
+   You can enter your commit message following the [Conventional Commits](https://www.conventionalcommits.org/) format directly in the commit input box.
+
+2. **Using `git commit` without `-m`**
+   Run `git commit` and provide the commit message in your editor in the proper conventional format.
+
+3. **Using `git commit -m` with a multi-line message**
+   Example:
+   ```bash
+   git commit -m "chore(packages): Update react design system package
+
+   Update react design system package to v2.9.1
+
+   References: JIRA-1234"
+   ```
+   `Note:` Use Shift + Option + Enter to insert a newline inside the -m string when writing the commit in your terminal.
+
+
+### CSP Update Note:
+
+> Subzero URL in `index.ejs` has been updated from
+> `https://subzero.axisbank.com` → `https://subzero.axis.bank.in`
+>
+> Please ensure that the **CSP `style-src` and `font-src` directives** are also updated to replace the old URL with
+> `https://subzero.axis.bank.in` in your configuration.

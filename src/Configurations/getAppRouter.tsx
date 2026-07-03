@@ -1,5 +1,5 @@
-import type { RouteObject } from 'react-router-dom'
-import { createBrowserRouter } from 'react-router-dom'
+import type { RouteObject } from 'react-router'
+import { createBrowserRouter } from 'react-router'
 
 import ErrorBoundary from '~/src/Layouts/ErrorBoundary'
 
@@ -19,7 +19,8 @@ const MainLayout = lazyLoadPage(
     import(
       /* webpackChunkName: "MainLayout" */
       '~/src/Layouts/Main.Layout'
-    )
+    ),
+  'MainLayout'
 )
 
 const ErrorLayout = lazyLoadPage(
@@ -27,7 +28,8 @@ const ErrorLayout = lazyLoadPage(
     import(
       /* webpackChunkName: "ErrorLayout" */
       '~/src/Layouts/Error.Layout'
-    )
+    ),
+  'ErrorLayout'
 )
 
 // Pages & Loaders
@@ -39,7 +41,8 @@ const HomeLoader = validatePublicRouteLoader(
 )
 
 const HomePage = lazyLoadPage(
-  () => import(/* webpackChunkName: "HomePage" */ '~/src/Pages/Home/Home.Page')
+  () => import(/* webpackChunkName: "HomePage" */ '~/src/Pages/Home/Home.Page'),
+  'HomePage'
 )
 
 // About
@@ -52,7 +55,8 @@ const AboutLoader = validatePublicRouteLoader(
 
 const AboutPage = lazyLoadPage(
   () =>
-    import(/* webpackChunkName: "AboutPage" */ '~/src/Pages/About/About.Page')
+    import(/* webpackChunkName: "AboutPage" */ '~/src/Pages/About/About.Page'),
+  'AboutPage'
 )
 
 // NotFound
@@ -67,7 +71,8 @@ const NotFoundPage = lazyLoadPage(
   () =>
     import(
       /* webpackChunkName: "NotFoundPage" */ '~/src/Pages/NotFound/NotFound.Page'
-    )
+    ),
+  'NotFoundPage'
 )
 
 // SomethingWentWrong
@@ -82,7 +87,8 @@ const SomethingWentWrongPage = lazyLoadPage(
   () =>
     import(
       /* webpackChunkName: "SomethingWentWrongPage" */ '~/src/Pages/SomethingWentWrong/SomethingWentWrong.Page'
-    )
+    ),
+  'SomethingWentWrongPage'
 )
 
 // UnsupportedBrowsers
@@ -97,13 +103,15 @@ const UnsupportedBrowsersPage = lazyLoadPage(
   () =>
     import(
       /* webpackChunkName: "UnsupportedBrowsersPage" */ '~/src/Pages/UnsupportedBrowsers/UnsupportedBrowsers.Page'
-    )
+    ),
+  'UnsupportedBrowsersPage'
 )
 
 const routeObj: RouteObject[] = [
   {
     element: MainLayout,
     HydrateFallback: Loader,
+    // Error boundary component is necessary to over ride default react router error boundary
     errorElement: <ErrorBoundary />,
     children: [
       {
@@ -121,6 +129,7 @@ const routeObj: RouteObject[] = [
   {
     element: ErrorLayout,
     HydrateFallback: Loader,
+    // Error boundary component is necessary to over ride default react router error boundary
     errorElement: <ErrorBoundary />,
     children: [
       {

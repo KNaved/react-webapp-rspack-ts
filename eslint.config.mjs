@@ -13,7 +13,9 @@ import tseslint from 'typescript-eslint'
 /** @type {import("eslint").Linter.FlatConfig[]} */
 export default [
   {
-    files: ['**/*.{js,cjs,mjs,ts,tsx,jsx,json,jsonc,json5}'],
+    ignores: ['**/.github/ai-review.ts']
+  },
+  {
     ignores: [
       '**/node_modules/**',
       '**/dist/**',
@@ -24,8 +26,12 @@ export default [
       '**/storybook-static/**',
       '**/yarn.lock',
       '**/pnpm-lock.yaml',
-      '**/.DS_Store'
+      '**/.DS_Store',
+      '**/src/AssetFiles/**'
     ]
+  },
+  {
+    files: ['**/*.{js,cjs,mjs,ts,tsx,jsx,json,jsonc,json5}']
   },
 
   // Base JS config - applies to all JS/TS(X) files
