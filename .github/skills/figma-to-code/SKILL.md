@@ -75,6 +75,12 @@ If `get_design_context` returns valid data, analyze the design:
     - Width ≤ 430px → **Mobile** view.
     - Width ≥ 768px → **Desktop** view.
     - Width between 431–767px → **Tablet** (treat as mobile).
+10. **Icon / Graphic Classification** — for every non-text, non-layout node, tag it before writing any code:
+    - `REMIX_ICON` → implement as `DsRemixIcon`
+    - `SVG_ASSET` → SVG file in `src/AssetFiles/images/`
+    - `DS_COMPONENT` → DS primitives (`DsBox`, `DsStack`, etc.)
+    See §5.9 for the full decision rule and signals.
+11. **Colour per-node attribution** — when the parent node's design context lists two or more colour tokens, do NOT assign them to child elements by inference. Call `get_design_context` on each relevant child node individually. Each sub-node response maps exactly one token set to exactly one element — use that, not the parent's combined list.
 
 ---
 
@@ -141,6 +147,11 @@ Match by priority: component type, then text content, then position/hierarchy. D
 - **Restructured layout**: Restructure the wrapper but keep children and their logic intact.
 - **Raw hex color**: Check `figma-token-map.md`. If not found, ask the user.
 - **Ambiguous match**: Ask the user to clarify.
+<!-- FIX 2: Matching a reference component's padding/spacing by value alone is not enough.
+     The container that carries the padding matters as much as the value itself.
+     A parent wrapper and a child container have different visual effects even with equal values.
+     Always read the reference component's source to verify which element holds the padding. -->
+- **Matching an existing component's padding/spacing**: Read that component's source file first. Apply the same *container scope* the reference uses (i.e. which element carries the padding), not just the same value.
 
 ---
 
@@ -225,6 +236,19 @@ If the design shows data-driven UI (lists from API, user data, etc.):
 2. Create a service file in `src/Redux/<Domain>/Services/`.
 3. Create selectors in `src/Redux/<Domain>/Selectors.ts`.
 
+<!-- FIX 3: Service outcomes must be agreed with the user before any service call is written.
+     Silent .catch(() => {}) blocks made failures invisible — the feature appeared broken
+     because errors produced no feedback. The three questions below are mandatory.
+     Never write a .then()/.catch() block without answers to all three. -->
+**Before implementing any service call**, ask the user:
+> - **Succeeds** — what should happen? (e.g. navigate to a route, show a success toast, close a modal)
+> - **Fails** — what should happen? (e.g. show an error toast, display an inline error, stay on screen)
+> - **Times out / network error** — same as failure, or different?
+
+Then implement all three outcomes explicitly based on the user's answers.
+
+> **Never write an empty `.catch(() => {})`.** It is a 🔴 Error finding in Phase 6 review and makes service failures invisible to the user. Minimum on failure: call `enqueueSnackbar` with `variant: 'error'` and a descriptive message.
+
 ---
 
 ## Phase 5 — Code Generation Rules & Conventions
@@ -241,6 +265,12 @@ If no DS equivalent exists:
 ### 5.2 — Use Design Tokens
 
 Always use CSS variables from `.github/figma-token-map.md` for colors, spacing, and border-radius. **NEVER hardcode values.**
+
+<!-- FIX 1: Spacing tokens must be verified before use — never assumed from memory.
+     Token names do not map intuitively to px values.
+     E.g. quickFreeze=4px, glacial=8px, frostbite=12px, bitterCold=16px, cool=20px, mild=24px.
+     Assuming them from name alone has caused visible spacing bugs in production. -->
+> **Token verification (mandatory before writing any `dsSpacing.*` call):** Open `.github/figma-token-map.md` and read the spacing table to confirm the exact token name → px mapping. Do not rely on memory or inference from the token name.
 
 ### 5.3 — Key Rules
 
@@ -297,10 +327,83 @@ export default <ComponentName>
 
 ### 5.7 — What NEVER to Do
 
+<!-- FIX 6: Visual props and UI elements were added from convention, pattern-matching from
+     other screens, or intuition — not from the Figma node. Examples: topBorder on BottomSticker
+     rendered a visible divider that wasn't in the design; icons added to buttons that had none
+     in Figma. The blockquote below is the single guard against all assumption-based bugs.
+     It applies to every visual property without exception. -->
+> **Figma is the only source of truth for every visual prop, element, and layout detail.**
+> Before adding any prop, icon, border, divider, shadow, color, or spacing value — confirm it
+> is explicitly visible in the Figma node. Convention, intuition, and pattern-matching from
+> other screens are **not** valid sources. When in doubt, check the Figma node before writing.
+
 - Never set `style={{ color: '#97144D' }}` — use CSS variable.
 - Never set `style={{ padding: '16px' }}` — use spacing token.
 - Never set `fontSize` manually on a `DsTypography` — use `variant`.
 - Never add a new custom SCSS class for something a DS component prop already handles.
+- **Never approximate an `SVG_ASSET` node with CSS** (stacked `DsBox` layers, `border-radius` circles, rotated elements, grid overlays). CSS composites cannot be visually verified without a live browser render and require multiple fix iterations. Classify the node using §5.9 and use the correct path.
+
+### 5.8 — DsButton Audit Checklist
+
+<!-- FIX 5: Button props were written from convention rather than from the Figma node.
+     This caused wrong `size`, unwanted icons (ri-download-line added to a text-only button),
+     and incorrect wrapper behavior (topBorder on BottomSticker that had no divider in Figma).
+     Every property in the table below must be confirmed against the Figma node before writing.
+     Note: topBorder is just one example of Fix 6 — the Figma-truth rule above covers all cases. -->
+Before writing any `DsButton`, verify each property directly from the Figma node. Do **not** infer from context or convention:
+
+| Property | What to verify in Figma | Common mistake to avoid |
+| :--- | :--- | :--- |
+| `variant` | Is the button filled (contained), outlined, or text-only? | Defaulting to `contained` without checking |
+| `size` | What height/size tier does Figma specify? | Using the wrong size tier |
+| `startIcon` / `endIcon` | Is there literally a visible icon element in the Figma node? | Adding an icon because the context "seems to call for one" |
+| Wrapper context | What wraps the button? Check wrapper props separately against Figma | Adding wrapper props (e.g. dividers, borders) not shown in Figma |
+
+### 5.9 — Icon and Graphic Asset Decision Rule
+
+<!-- FIX: A composite vector icon (circle + calendar + diagonal line) was approximated with a
+     CSS grid overlay of DsBox elements instead of being saved as an SVG file. The CSS approach
+     could not be verified without a live browser, produced colour mismatches (wrong token on
+     circle border), and required three separate fix iterations. The rules below prevent this
+     by classifying graphic nodes before any code is written and requiring asset scans and
+     user confirmation before any new file is created. -->
+
+#### 5.9.1 — Classification signals
+
+| Signal | Classification | Implementation |
+| :--- | :--- | :--- |
+| Single `<instance>` child + standard icon size (16/20/24/32 px) + one colour token | `REMIX_ICON` | `DsRemixIcon className='ri-...'` |
+| Any `<vector>` child present | `SVG_ASSET` | SVG file in `src/AssetFiles/images/` |
+| Multiple layered children (shape + icon + line, etc.) | `SVG_ASSET` | SVG file in `src/AssetFiles/images/` |
+| Non-standard size + multiple colour tokens | `SVG_ASSET` | SVG file in `src/AssetFiles/images/` |
+| Layout-only node | `DS_COMPONENT` | DS primitives |
+
+#### 5.9.2 — For `REMIX_ICON` nodes
+
+1. Check the child instance node's name. If it contains the full remix path (e.g. `remix-icons/line/business/calendar-line`) the `ri-*` class is directly readable from it.
+2. If the name is a **generic slot name** (`trailing_icon`, `icon`, `leading_icon`, `icon_button`, etc.) — **always get a screenshot** of that node before writing any class. Never leave a placeholder or guess the class from context.
+3. Call `get_design_context` on the child instance node individually (not from the parent) to get the exact colour token.
+
+#### 5.9.3 — For `SVG_ASSET` nodes
+
+<!-- FIX (2026-08-10): A candidate match (`no-transactions.svg`) was found by scanning, then judged
+     a match by the agent itself — comparing hex colours and rotation angles read from the SVG
+     source against the Figma design context. The agent then stated "I'll reuse it" as a decision
+     instead of a question. The user later confirmed it was NOT the intended asset. Reading
+     matching numbers out of source code is not proof of a visual match — only the user can
+     confirm that. The steps below make user confirmation mandatory and non-optional. -->
+
+1. **Scan existing assets first.** Run `list_dir src/AssetFiles/images/` and check for files whose names suggest the same visual pattern (e.g. `no-data`, `empty`, `calendar`, `no-orders`).
+2. **If a candidate is found, do not judge the match yourself.** Comparing hex values, rotation angles, or path shapes read from the file is a heuristic for finding a *candidate* only — it is never sufficient grounds to decide reuse. Present the candidate and ask:
+   > "I found **`<filename>`** which may match this design. Can you confirm — is this the same asset? Reply **reuse** to use it, or **download** to fetch the exact asset from Figma instead."
+   - Wait for an explicit answer. A declarative statement like "I'll reuse X" does not satisfy this — it must be phrased as a question and answered before any code references the asset.
+3. **If no candidate is found, or the user chooses download:** call `download_assets` on the node and save the returned bytes verbatim — never hand-author, approximate, or reconstruct the SVG from JSX/CSS reference code.
+4. **If `download_assets` is unavailable** (the tool is disabled or not permitted): do **not** fall back to creating or approximating the SVG yourself. Tell the user the tool isn't available and either ask them to enable it, or give them the exact command (e.g. the `curl` command against the Figma export URL) to run themselves and confirm once the file is saved.
+5. **Ask the user for the file name** before writing any new asset:
+   > "What would you like to name this asset file? (e.g. `no-orders.svg`)"
+   Never self-assign the name.
+6. Call `get_design_context` on **each child node individually** to get the correct colour token per element when documenting the asset. Never assign colours from the parent node's combined token list.
+7. Add an entry to `src/Constants/ASSET_MAP.ts` and use `DsImage` with the asset's `srcSet` in the component.
 
 ---
 
