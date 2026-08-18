@@ -75,6 +75,48 @@ Captures: all design variable definitions (colour, spacing, radius tokens).
 
 ---
 
+## Phase 2.5 — Semantic Validity Check
+
+<!-- WHY THIS EXISTS: MCP tools returning HTTP 200 is not sufficient proof that the node is a
+     UI frame suitable for code generation. A prior session fetched a <vector> asset node
+     (a wide banner illustration). All tools returned successfully. The agent incorrectly
+     treated this as a successful snapshot and proceeded to infer code from the wrong source.
+     This check is the formal gate that catches that case before any code is written. -->
+
+> **This check is mandatory.** A snapshot is only valid if the node is a real UI frame.
+> Passing this check is what "Phase 1 succeeded" actually means — not just "the tools ran."
+
+After the four tool calls above complete, verify ALL of the following:
+
+**Check 1 — Node type**
+The root element returned by `get_metadata` must be one of: `<frame>`, `<component>`, `<component_set>`, `<instance>`.
+If it is `<vector>`, `<boolean_operation>`, `<rectangle>`, `<ellipse>`, `<line>`, or any primitive shape → **FAIL**.
+
+**Check 2 — Children present**
+The metadata tree must contain at least one child element.
+A childless node is a leaf asset (icon, image, shape), not a UI frame → **FAIL**.
+
+**Check 3 — Component tree in design context**
+The code returned by `get_design_context` must contain more than one JSX element.
+A response that is only a single `<div>` wrapping a single `<img>` means the node is a rasterised asset → **FAIL**.
+
+**Check 4 — Name heuristic (warning, enforces checks 1–3 strictly)**
+If the node name matches any of: `-->`, `image`, `banner`, `illustration`, `bg`, `background`, `asset` — treat as a likely asset. Checks 1–3 must all pass without exception.
+
+**If any check fails:**
+
+Stop. Output this message and do NOT write any snapshot files:
+
+> ⛔ **Snapshot aborted — node is not a UI frame.**
+> Node `<nodeId>` (`<nodeName>`) is a `<type>`. This is an asset, not a UI frame.
+> Snapshot files have NOT been written.
+>
+> **Next step:** Scan adjacent node IDs (±5, ±10, ±20) using `get_metadata` to find the parent UI frame, then ask the user to confirm the correct node before retrying.
+
+The calling agent (FigmaToReact) must then execute the Adjacent Node Scanning procedure defined in its Phase 1 section.
+
+---
+
 ## Phase 3 — Build the Metadata Record
 
 Construct a `metadata.json` object:

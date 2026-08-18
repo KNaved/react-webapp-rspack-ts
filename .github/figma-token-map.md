@@ -1,122 +1,136 @@
 # Figma → Design System Token Map
 
+> `@am92/react-design-system` version: `2.9.8` (installed; `package.json` range: `^2.9.5`).
+> Generated: 2026-08-10. Last updated: 2026-08-17.
+>
 > Used by AI agents (GitHub Copilot + Figma MCP) when generating React components from Figma designs.
 > All tokens map to `@am92/react-design-system`. Never hardcode hex values, px values, or raw strings.
+>
+> Colour/Spacing/Radius/Typography/Breakpoint sections below are resolved directly from
+> `node_modules/@am92/react-design-system/dist/Constants/PALETTE.js` and `dist/Theme/**` — not scraped,
+> not approximated. Computed 2026-08-10. See `.github/design-system-color-tokens.md` and
+> `.github/design-system-spacing-radius-typography-tokens.md` for the standalone source-cited versions.
 
 ---
 
 ## Color Tokens
 
-> Source: https://storybook.staging.axisb.com/v2/?path=/story/getting-started-colours--colours
+> Source: `dist/Constants/PALETTE.js` resolved through `dist/Theme/getColorScheme/{light,dark,highContrast}.js`.
+> Project's `DEFAULT_THEME_MODE` (`src/Constants/THEME.ts`) is **`light`**. `src/Constants/THEME.ts`'s own
+> `PALETTE = {}` is merged as `{ ...packageDefaultPALETTE, ...projectPALETTE }`, so the package defaults
+> below are what actually renders in this app.
 
 ### Action Colors
 
-| Figma Token Name  | CSS Variable                       | Light   | Dark    |
-| ----------------- | ---------------------------------- | ------- | ------- |
-| `actionPrimary`   | `var(--ds-colour-actionPrimary)`   | #97144D | #97144D |
-| `actionSecondary` | `var(--ds-colour-actionSecondary)` | #ED1164 | #ED1164 |
-| `actionTertiary`  | `var(--ds-colour-actionTertiary)`  | #0C746C | #0C746C |
+| Figma Token Name  | CSS Variable                       | Light   | Dark    | High Contrast |
+| ----------------- | ---------------------------------- | ------- | ------- | ------------- |
+| `actionPrimary`   | `var(--ds-colour-actionPrimary)`   | #97144D | #97144D | #68EBB2       |
+| `actionSecondary` | `var(--ds-colour-actionSecondary)` | #ED1164 | #ED1164 | #68EBB2       |
+| `actionTertiary`  | `var(--ds-colour-actionTertiary)`  | #12877F | #12877F | #68EBB2       |
 
 ### Surface Colors
 
-| Figma Token Name    | CSS Variable                         | Light   | Dark    |
-| ------------------- | ------------------------------------ | ------- | ------- |
-| `surfaceBackground` | `var(--ds-colour-surfaceBackground)` | #FFFFFF | #282828 |
-| `surfacePrimary`    | `var(--ds-colour-surfacePrimary)`    | #FFFFFF | #000000 |
-| `surfaceSecondary`  | `var(--ds-colour-surfaceSecondary)`  | #F9F9F9 | #404040 |
-| `surfaceTertiary`   | `var(--ds-colour-surfaceTertiary)`   | #404040 | #F9F9F9 |
+| Figma Token Name    | CSS Variable                         | Light   | Dark    | High Contrast |
+| ------------------- | ------------------------------------ | ------- | ------- | ------------- |
+| `surfaceBackground` | `var(--ds-colour-surfaceBackground)` | #FFFFFF | #282828 | #282828       |
+| `surfacePrimary`    | `var(--ds-colour-surfacePrimary)`    | #FFFFFF | #000000 | #000000       |
+| `surfaceSecondary`  | `var(--ds-colour-surfaceSecondary)`  | #F9F9F9 | #404040 | #282828       |
+| `surfaceTertiary`   | `var(--ds-colour-surfaceTertiary)`   | #404040 | #F9F9F9 | #F9F9F9       |
 
 ### Typography Colors
 
-| Figma Token Name       | CSS Variable                            | Light   | Dark    |
-| ---------------------- | --------------------------------------- | ------- | ------- |
-| `typoPrimary`          | `var(--ds-colour-typoPrimary)`          | #282828 | #F9F9F9 |
-| `typoSecondary`        | `var(--ds-colour-typoSecondary)`        | #575757 | #E2E2E2 |
-| `typoTertiary`         | `var(--ds-colour-typoTertiary)`         | #6E6E6E | #B4B4B4 |
-| `typoActionPrimary`    | `var(--ds-colour-typoActionPrimary)`    | #97144D | #FFFFFF |
-| `typoActionSecondary`  | `var(--ds-colour-typoActionSecondary)`  | #ED1164 | #ED1164 |
-| `typoActionTertiary`   | `var(--ds-colour-typoActionTertiary)`   | #0C746C | #F3FBFB |
-| `typoOnSurface`        | `var(--ds-colour-typoOnSurface)`        | #FFFFFF | #FFFFFF |
-| `typoDisabled`         | `var(--ds-colour-typoDisabled)`         | #B4B4B4 | #9D9D9D |
-| `typoTypical`          | `var(--ds-colour-typoTypical)`          | #165964 | #E3F5F8 |
-| `typoOnSurfaceDynamic` | `var(--ds-colour-typoOnSurfaceDynamic)` | #FFFFFF | #282828 |
+| Figma Token Name       | CSS Variable                            | Light   | Dark    | High Contrast |
+| ---------------------- | --------------------------------------- | ------- | ------- | ------------- |
+| `typoPrimary`          | `var(--ds-colour-typoPrimary)`          | #282828 | #F9F9F9 | #FFFFFF       |
+| `typoSecondary`        | `var(--ds-colour-typoSecondary)`        | #6E6E6E | #E2E2E2 | #FFFFFF       |
+| `typoTertiary`         | `var(--ds-colour-typoTertiary)`         | #9D9D9D | #B4B4B4 | #E2E2E2       |
+| `typoActionPrimary`    | `var(--ds-colour-typoActionPrimary)`    | #97144D | #FFFFFF | #68EBB2       |
+| `typoActionSecondary`  | `var(--ds-colour-typoActionSecondary)`  | #ED1164 | #ED1164 | #68EBB2       |
+| `typoActionTertiary`   | `var(--ds-colour-typoActionTertiary)`   | #12877F | #F3FBFB | #68EBB2       |
+| `typoOnSurface`        | `var(--ds-colour-typoOnSurface)`        | #FFFFFF | #FFFFFF | #282828       |
+| `typoDisabled`         | `var(--ds-colour-typoDisabled)`         | #B4B4B4 | #9D9D9D | #9D9D9D       |
+| `typoTypical`          | `var(--ds-colour-typoTypical)`          | #165964 | #E3F5F8 | #A0E2F7       |
+| `typoOnSurfaceDynamic` | `var(--ds-colour-typoOnSurfaceDynamic)` | #FFFFFF | #282828 | #282828       |
 
 ### Neutral Colors
 
-| Figma Token Name | CSS Variable                | Light   | Dark    |
-| ---------------- | --------------------------- | ------- | ------- |
-| `neutral1`       | `var(--ds-colour-neutral1)` | #F1F4F7 | #0C1015 |
-| `neutral2`       | `var(--ds-colour-neutral2)` | #EBF9F8 | #0F322F |
-| `neutral3`       | `var(--ds-colour-neutral3)` | #EBF0F9 | #0F1B32 |
-| `neutral4`       | `var(--ds-colour-neutral4)` | #F4EBF9 | #260F32 |
-| `neutral5`       | `var(--ds-colour-neutral5)` | #F9F6EB | #322A0F |
-| `neutral6`       | `var(--ds-colour-neutral6)` | #B8DDDB | #3D7F7C |
+| Figma Token Name | CSS Variable                | Light   | Dark    | High Contrast |
+| ---------------- | --------------------------- | ------- | ------- | ------------- |
+| `neutral1`       | `var(--ds-colour-neutral1)` | #F1F4F7 | #0C1015 | #0C1015       |
+| `neutral2`       | `var(--ds-colour-neutral2)` | #EBF9F8 | #0F322F | #0C1015       |
+| `neutral3`       | `var(--ds-colour-neutral3)` | #EBF0F9 | #0F1B32 | #0C1015       |
+| `neutral4`       | `var(--ds-colour-neutral4)` | #F4EBF9 | #260F32 | #0C1015       |
+| `neutral5`       | `var(--ds-colour-neutral5)` | #F9F6EB | #322A0F | #0C1015       |
+| `neutral6`       | `var(--ds-colour-neutral6)` | #B8DDDB | #3D7F7C | #0C1015       |
 
 ### Icon Colors
 
-| Figma Token Name       | CSS Variable                            | Light   | Dark    |
-| ---------------------- | --------------------------------------- | ------- | ------- |
-| `iconNegative`         | `var(--ds-colour-iconNegative)`         | #EB0000 | #FF6C6C |
-| `iconPositive`         | `var(--ds-colour-iconPositive)`         | #278829 | #62D264 |
-| `iconWarning`          | `var(--ds-colour-iconWarning)`          | #D84008 | #F87647 |
-| `iconActionPrimary`    | `var(--ds-colour-iconActionPrimary)`    | #97144D | #97144D |
-| `iconActionSecondary`  | `var(--ds-colour-iconActionSecondary)`  | #ED1164 | #ED1164 |
-| `iconActionTertiary`   | `var(--ds-colour-iconActionTertiary)`   | #0C746C | #F3FBFB |
-| `iconOnSurface`        | `var(--ds-colour-iconOnSurface)`        | #FFFFFF | #FFFFFF |
-| `iconDisabled`         | `var(--ds-colour-iconDisabled)`         | #B4B4B4 | #9D9D9D |
-| `iconDefault`          | `var(--ds-colour-iconDefault)`          | #FFFFFF | #FFFFFF |
-| `iconTypical`          | `var(--ds-colour-iconTypical)`          | #165964 | #E3F5F8 |
-| `iconOnSurfaceDynamic` | `var(--ds-colour-iconOnSurfaceDynamic)` | #404040 | #282828 |
+| Figma Token Name       | CSS Variable                            | Light   | Dark    | High Contrast |
+| ---------------------- | ---------------------------------------- | ------- | ------- | ------------- |
+| `iconNegative`         | `var(--ds-colour-iconNegative)`         | #EB0000 | #FF6C6C | #A0E2F7       |
+| `iconPositive`         | `var(--ds-colour-iconPositive)`         | #278829 | #62D264 | #A0E2F7       |
+| `iconWarning`          | `var(--ds-colour-iconWarning)`          | #D84008 | #F87647 | #A0E2F7       |
+| `iconActionPrimary`    | `var(--ds-colour-iconActionPrimary)`    | #97144D | #97144D | #68EBB2       |
+| `iconActionSecondary`  | `var(--ds-colour-iconActionSecondary)`  | #ED1164 | #ED1164 | #68EBB2       |
+| `iconActionTertiary`   | `var(--ds-colour-iconActionTertiary)`   | #12877F | #F3FBFB | #68EBB2       |
+| `iconOnSurface`        | `var(--ds-colour-iconOnSurface)`        | #FFFFFF | #FFFFFF | #FFFFFF       |
+| `iconDisabled`         | `var(--ds-colour-iconDisabled)`         | #B4B4B4 | #9D9D9D | #9D9D9D       |
+| `iconDefault`          | `var(--ds-colour-iconDefault)`          | #404040 | #FFFFFF | #FFFFFF       |
+| `iconTypical`          | `var(--ds-colour-iconTypical)`          | #165964 | #E3F5F8 | #A0E2F7       |
+| `iconOnSurfaceDynamic` | `var(--ds-colour-iconOnSurfaceDynamic)` | #FFFFFF | #282828 | #282828       |
 
 ### Stroke / Border Colors
 
-| Figma Token Name          | CSS Variable                               | Light   | Dark    |
-| ------------------------- | ------------------------------------------ | ------- | ------- |
-| `strokeDefault`           | `var(--ds-colour-strokeDefault)`           | #E2E2E2 | #6E6E6E |
-| `strokeSelected`          | `var(--ds-colour-strokeSelected)`          | #F14687 | #F57BA9 |
-| `strokeSecondarySelected` | `var(--ds-colour-strokeSecondarySelected)` | #81C1BD | #B8DDDB |
-| `strokeHover`             | `var(--ds-colour-strokeHover)`             | #F9B0CC | #F9B0CC |
-| `strokeDisabled`          | `var(--ds-colour-strokeDisabled)`          | #B4B4B4 | #9D9D9D |
-| `strokeActive`            | `var(--ds-colour-strokeActive)`            | #404040 | #F9F9F9 |
+| Figma Token Name          | CSS Variable                               | Light   | Dark    | High Contrast |
+| ------------------------- | ------------------------------------------ | ------- | ------- | ------------- |
+| `strokeDefault`           | `var(--ds-colour-strokeDefault)`           | #E2E2E2 | #6E6E6E | #F9F9F9       |
+| `strokeSelected`          | `var(--ds-colour-strokeSelected)`          | #F14687 | #F57BA9 | #68EBB2       |
+| `strokeSecondarySelected` | `var(--ds-colour-strokeSecondarySelected)` | #81C1BD | #B8DDDB | #68EBB2       |
+| `strokeHover`             | `var(--ds-colour-strokeHover)`             | #F9B0CC | #F9B0CC | #68EBB2       |
+| `strokeDisabled`          | `var(--ds-colour-strokeDisabled)`          | #B4B4B4 | #9D9D9D | #9D9D9D       |
+| `strokeActive`            | `var(--ds-colour-strokeActive)`            | #404040 | #F9F9F9 | #FFFFFF       |
 
 ### Support / Status Colors
 
-| Figma Token Name         | CSS Variable                              | Light   | Dark    |
-| ------------------------ | ----------------------------------------- | ------- | ------- |
-| `supportNegative`        | `var(--ds-colour-supportNegative)`        | #EB0000 | #FF6C6C |
-| `supportPositive`        | `var(--ds-colour-supportPositive)`        | #278829 | #62D264 |
-| `supportWarning`         | `var(--ds-colour-supportWarning)`         | #D84008 | #F87647 |
-| `supportVariable`        | `var(--ds-colour-supportVariable)`        | #145599 | #145599 |
-| `supportTypical`         | `var(--ds-colour-supportTypical)`         | #165964 | #165964 |
-| `supportNegativeNeutral` | `var(--ds-colour-supportNegativeNeutral)` | #F9EBEF | #320F19 |
-| `supportPositiveNeutral` | `var(--ds-colour-supportPositiveNeutral)` | #EFF9EB | #0C1907 |
-| `supportWarningNeutral`  | `var(--ds-colour-supportWarningNeutral)`  | #F9F1EB | #321E0F |
-| `supportTypicalNeutral`  | `var(--ds-colour-supportTypicalNeutral)`  | #E3F5F8 | #E3F5F8 |
+| Figma Token Name         | CSS Variable                              | Light   | Dark    | High Contrast |
+| ------------------------ | ----------------------------------------- | ------- | ------- | ------------- |
+| `supportNegative`        | `var(--ds-colour-supportNegative)`        | #EB0000 | #FF6C6C | #A0E2F7       |
+| `supportPositive`        | `var(--ds-colour-supportPositive)`        | #278829 | #62D264 | #A0E2F7       |
+| `supportWarning`         | `var(--ds-colour-supportWarning)`         | #D84008 | #F87647 | #A0E2F7       |
+| `supportVariable`        | `var(--ds-colour-supportVariable)`        | #145599 | #145599 | #A0E2F7       |
+| `supportTypical`         | `var(--ds-colour-supportTypical)`         | #165964 | #165964 | #A0E2F7       |
+| `supportNegativeNeutral` | `var(--ds-colour-supportNegativeNeutral)` | #F9EBEF | #320F19 | #0C1015       |
+| `supportPositiveNeutral` | `var(--ds-colour-supportPositiveNeutral)` | #EFF9EB | #0C1907 | #0C1015       |
+| `supportWarningNeutral`  | `var(--ds-colour-supportWarningNeutral)`  | #F9F1EB | #321E0F | #0C1015       |
+| `supportTypicalNeutral`  | `var(--ds-colour-supportTypicalNeutral)`  | #E3F5F8 | #E3F5F8 | #0C1015       |
 
 ### State Colors
 
-| Figma Token Name                | CSS Variable                                     | Light                  | Dark                   |
-| ------------------------------- | ------------------------------------------------ | ---------------------- | ---------------------- |
-| `stateSelectedPrimaryHover`     | `var(--ds-colour-stateSelectedPrimaryHover)`     | rgba(241,70,135,0.08)  | rgba(249,176,204,0.2)  |
-| `stateSelectedPrimaryPressed`   | `var(--ds-colour-stateSelectedPrimaryPressed)`   | #F9B0CC                | #F9B0CC                |
-| `stateSelectedSecondaryHover`   | `var(--ds-colour-stateSelectedSecondaryHover)`   | #F3FBFB                | #081919                |
-| `stateSelectedSecondaryPressed` | `var(--ds-colour-stateSelectedSecondaryPressed)` | #E6F8F4                | #154B3F                |
-| `stateSelectedVisitedTextLink`  | `var(--ds-colour-stateSelectedVisitedTextLink)`  | #9911ED                | #780DBB                |
-| `stateUnselectedDefault`        | `var(--ds-colour-stateUnselectedDefault)`        | #B4B4B4                | #9D9D9D                |
-| `stateUnselectedHover`          | `var(--ds-colour-stateUnselectedHover)`          | rgba(180,180,180,0.12) | rgba(180,180,180,0.2)  |
-| `stateUnselectedPressed`        | `var(--ds-colour-stateUnselectedPressed)`        | rgba(180,180,180,0.16) | rgba(180,180,180,0.25) |
-| `stateDisabledSurface`          | `var(--ds-colour-stateDisabledSurface)`          | #F1F1F1                | #404040                |
+| Figma Token Name                | CSS Variable                                     | Light                  | Dark                   | High Contrast          |
+| -------------------------------- | ----------------------------------------------------- | ------------------------- | ------------------------- | ------------------------- |
+| `stateSelectedPrimaryHover`     | `var(--ds-colour-stateSelectedPrimaryHover)`     | rgba(241,70,135,0.08)  | rgba(249,176,204,0.2)  | rgba(145,243,200,0.2)  |
+| `stateSelectedPrimaryPressed`   | `var(--ds-colour-stateSelectedPrimaryPressed)`   | #F9B0CC                | #F9B0CC                | #CFFFEA                |
+| `stateSelectedSecondaryHover`   | `var(--ds-colour-stateSelectedSecondaryHover)`   | #F3FBFB                | #081919                | #081919                |
+| `stateSelectedSecondaryPressed` | `var(--ds-colour-stateSelectedSecondaryPressed)` | #E6F8F4                | #154B3F                | #154B3F                |
+| `stateSelectedVisitedTextLink`  | `var(--ds-colour-stateSelectedVisitedTextLink)`  | #9911ED                | #780DBB                | #780DBB                |
+| `stateUnselectedDefault`        | `var(--ds-colour-stateUnselectedDefault)`        | #B4B4B4                | #9D9D9D                | #9D9D9D                |
+| `stateUnselectedHover`          | `var(--ds-colour-stateUnselectedHover)`          | rgba(180,180,180,0.12) | rgba(180,180,180,0.2)  | rgba(180,180,180,0.2)  |
+| `stateUnselectedPressed`        | `var(--ds-colour-stateUnselectedPressed)`        | rgba(180,180,180,0.16) | rgba(180,180,180,0.25) | rgba(180,180,180,0.25) |
+| `stateDisabledSurface`          | `var(--ds-colour-stateDisabledSurface)`          | #F1F1F1                | #404040                | #404040                |
 
 ### Overlay Colors
 
-| Figma Token Name | CSS Variable                     | Light                 | Dark            |
-| ---------------- | -------------------------------- | --------------------- | --------------- |
-| `overlay`        | `var(--ds-colour-overlay)`       | rgba(0,0,0,0.5)       | rgba(0,0,0,0.5) |
-| `overlayLoader`  | `var(--ds-colour-overlayLoader)` | rgba(255,255,255,0.3) | rgba(0,0,0,0.3) |
+| Figma Token Name | CSS Variable                     | Light                 | Dark            | High Contrast   |
+| ---------------- | -------------------------------- | --------------------- | --------------- | --------------- |
+| `overlay`        | `var(--ds-colour-overlay)`       | rgba(0,0,0,0.5)       | rgba(0,0,0,0.5) | rgba(0,0,0,0.5) |
+| `overlayLoader`  | `var(--ds-colour-overlayLoader)` | rgba(255,255,255,0.3) | rgba(0,0,0,0.3) | rgba(0,0,0,0.3) |
 
 ### Data Visualisation Colors
 
 > No CSS variables defined. Use raw hex values only in chart/graph contexts, never in UI components.
+> Source: `dist/x-charts/Constants/DS_DATA_VIS_{CAT,SEQ,TREND}_COLORS.js`. Categorical and Sequential
+> palettes are identical across `light`/`dark`/`highContrast` (no theme variation). Trend colors do vary
+> by theme and reuse the same hexes as the Support/Status colour tokens above.
 
 #### Categorical (unordered data)
 
@@ -146,9 +160,22 @@
 
 `#12265B` → `#1A3683` → `#2246AA` → `#2750C2` → `#3862D8` → `#6686E1` → `#94ABEA`
 
+#### Trend Colors
+
+| Trend Token             | Light   | Dark / High Contrast |
+| ------------------------ | ------- | --------------------- |
+| Positive                | #278829 | #62D264               |
+| Warning                 | #D84008 | #F87647               |
+| Error                   | #EB0000 | #FF6C6C               |
+| Positive Neutral (bg)   | #EFF9EB | #0C1907               |
+| Warning Neutral (bg)    | #F9F1EB | #322A0F               |
+| Error Neutral (bg)      | #F9EBEF | #320F19               |
+
 ---
 
 ## Spacing Tokens
+
+> Source: `dist/Theme/spacing.js`. `SPACE_COEFFICIENT = 4`.
 
 | Figma Spacing Value | CSS Variable                    | px    | rem   |
 | ------------------- | ------------------------------- | ----- | ----- |
@@ -176,6 +203,8 @@
 
 ## Border Radius Tokens
 
+> Source: `dist/Theme/radius.js`.
+
 | Figma Radius Value | CSS Variable                   | px   |
 | ------------------ | ------------------------------ | ---- |
 | `zero`             | `var(--ds-radius-zero)`        | 0px  |
@@ -190,10 +219,28 @@
 
 ---
 
+## Breakpoints (`display` / responsive `sx` / `withBreakpoints`)
+
+> Source: `dist/Theme/breakpoints.js`.
+
+| Key | Value (px) |
+| ---- | ----------- |
+| `xs` | 0         |
+| `sm` | 414       |
+| `md` | 744       |
+| `lg` | 1280      |
+| `xl` | 1440      |
+
+Used for: responsive `sx` object keys (e.g. `{ xs: 'var(--ds-spacing-glacial)', md: 'var(--ds-spacing-cool)' }`),
+`getDeviceActiveScreen(breakpoints)`, and the `withBreakpoints` HOC's mobile/desktop split
+(mobile = `xs`–`sm`, desktop = `md` and up).
+
+---
+
 ## Typography Tokens
 
-> Source: https://storybook.staging.axisb.com/v2/?path=/story/getting-started-typography--typography
-> Font family: `"Lato", "Helvetica"` for all variants.
+> Source: `dist/Theme/getTypography.js`. Font family: `"Lato", "Helvetica"` for all variants
+> (project's `FONT_FAMILY = 'Lato'` from `src/Constants/THEME.ts`).
 > Used via `<DsTypography variant="variantName">` from `@am92/react-design-system`.
 
 ### Display
